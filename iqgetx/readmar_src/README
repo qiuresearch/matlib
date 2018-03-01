@@ -1,0 +1,17 @@
+The program readmar is a small program to read in mar345 formatted images. 
+It's originally used for c programming. Now with the help of powerful tool 
+of mex function, it’s the first time that MATLAB can read mar345 formatted
+images directly.
+
+The compiling command is above:
+
+mex -o readmar readmar.c mar300_header.c mar345_header.c pck.c swap.c utils.c
+
+If you compile it in Linux, you will get readmar.mexa64 file; 
+if you compile it on Mac, you will get readmar.mexmaci64. 
+
+mymarreader.m is the ultimate script based on mexa64 file and mexmaci64 file.
+It’s feature is to read mar2300 file and output the image matrix as well as 
+output it as a tif image file. 
+
+For more details of mymarreader.m, just type help mymarreader.m.

@@ -1,0 +1,74 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Default">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (Win95; I) [Netscape]">
+   <title>Moa_History</title>
+</head>
+<body>
+&nbsp;
+<center>
+<br><b><font size=+3>MOA History</font></b><font size=+1></font></center>
+<font size=+1></font>
+<p><font size=+1>TV6 is an excellent X-ray data acquisition and analysis
+package written in the early 1990’s by Eric Eikenberry, Sol Gruner and
+Mark Tate. In addition to controlling the X-ray detector and some of the
+experimental apparatus TV6 provides excellent display features and rudimentary
+data analysis.</font>
+<p><font size=+1>However, it does suffer a number of weaknesses mostly
+due to it being a legacy system. Firstly, much of the code was originally
+implemented in Fortran, optimized for speed or in some other way altered
+to so as to diminish its readability. The design is not modular which,
+along with the non-ANSI and hardware specific features, is the predominant
+reason why it cannot easily be transported from the present DOS system.
+The parsing system only supports two data types (images and rfiles) which
+limits programming options. Because it is written in C, rather than an
+object-oriented language, memory allocation and usage is a source of bugs.
+Despite all these weakeness, it is still an excellent package.</font>
+<p><font size=+1>The consensus amongst TV6 users in mid-1999 was that the
+package would soon be replaced by a graphical user interface driven system,
+TVX, and new users should learn the bare minimum of TV6 syntax to survive.
+In this environment, I encountered my first problem when TV6’s dezingering
+routing proved inadequate for some low-signal data gathered from BLG protein
+in October, 1999. In January 2000, another difficulty was encountered when
+we needed to correct for the beam intensity. A sequence of tricky data
+analyses during this time made it clear that we needed to be able to import
+and manipulate X-ray images in a package such as MATLAB, MATHEMATICA or
+IDL. Since Adam Finnefrock had already developed a lot of code in MATLAB,
+we chose to use it.</font>
+<p><font size=+1>The core routines needed for a transfer were dezingering,
+CCD correction and the capacity to read tags. We resolved to write each
+routine in C so that we could place the code back in TV6 or TVX when it
+arrived. Furthermore, we decided to test it in an exhaustive fashion so
+we could be confident that it was as reliable, or superior, to the code
+in TV6. Finally, we made an explicit decision not to replicate features
+present in TV6 since we were not trying to replace it. This task was finished
+in early February, 2000 in the odd spare hour or two. Adam, meanwhile,
+was developing a GUI to combine the large number of routines he’d been
+writing.</font>
+<p><font size=+1>Immediately prior to a run at APS in July, 2000, I tried
+to take the current GUI, port it to Windows 98 and take it on a laptop
+so I could perform SAX analysis as we gathered data. Unfortunately, the
+GUI was not in great shape and many features were not going to come across
+to WINDOWS. After a completely fresh testing of all the core C routines,
+mex wrappers for each were written for MATLAB and a couple of exceedingly
+clunky higher level functions were put together. These were refined at
+APS, but since we didn’t succeed in gathering analysable data, they were
+never really tested. The lower level routines, though, performed without
+evident flaw.</font>
+<p><font size=+1>Since then, a logical, simple and occasionally intuitive
+set of higher level functions have been developed to permit Lois Pollack
+to analyse her data. The package contains just enough routines to complete
+an entire data analysis. Hopefully, additional functions will be added
+or improved, and the flexibility and syntax will slowly settle.</font>
+<p><font size=+1>MOA is hoped to be a temporary bridge for those needing
+to do complicated data analysis whilst the successor to TV6 is developed.
+It is NOT a program, or analysis package, but rather a toolkit to aid in
+image analysis. The only reason for using it is that it when it can simplify
+or significantly improve data analysis. It is a derivative work and only
+modifies slightly the code of TV6 to which it owes an enormous debt.</font>
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>

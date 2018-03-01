@@ -1,0 +1,26 @@
+#!/bin/zsh -f
+
+XM_fn="/tmp/matlabdump$$.tmp"
+if [ $# -eq 0 ]; then
+    echo "usage: mPut var [file]"
+    exit
+fi
+
+MCMD="%%% $0 %%%"$'\n'
+# save data to $XM_fn and check if there is any alpha character in last 3 lines
+trap "rm -f $XM_fn; exit 2" HUP INT QUIT SEGV PIPE TERM
+cat $2 | tee $XM_fn |
+if tail -3 | grep -q '[^[:space:]0-9.eE+\-]'; then
+    # text file
+    MCMD="$MCMD  $1=textread('$XM_fn','%s','delimiter','\\n','whitespace','');"
+else
+    # all numbers!
+    MCMD="$MCMD  $1=rhead('$XM_fn');"
+fi
+MCMD="$MCMD
+  delete(${(qq)XM_fn})"
+
+mat cQ $MCMD
+EC=$?
+[[ $EC != 0 ]] && rm -f $XM_fn
+exit $EC

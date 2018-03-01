@@ -1,0 +1,1 @@
+a = textread('temp.txt');

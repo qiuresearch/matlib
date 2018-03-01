@@ -1,0 +1,21 @@
+#!/bin/sh
+
+mat c "clear functions;" "$@" | gawk '
+/^.?\?\?\? / {  
+    sub(/(.*==>)?[^ ]* /, "");
+    m = $0;
+    while ( (getline > 0) && $0 != "" )
+	m = m " " $0;
+}
+/^Error in ==> / {
+    f = $4;
+    gsub( /\\/, "/", f );
+    l = 1;
+    getline;
+    if ( /^On line / )
+	l = $3;
+    print "E",f,l, (m) ? m : "-\"-"
+    m = ""
+}
+END { if (m) print "E ", m }
+'

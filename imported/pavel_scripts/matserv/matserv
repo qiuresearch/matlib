@@ -1,0 +1,65 @@
+#!/bin/zsh -f
+# matserv [-kmp] ... start or close matlab server
+
+# setopt xtrace 
+setopt nobgnice
+
+MATLAB_BIN=/u24/local/bin/matlab
+MATSERV=${MATSERV-${HOME}/m/matserv}
+MAXIDLEMIN=60
+IN=$MATSERV/matserv.in
+OUT=$MATSERV/matserv.out
+
+case $1 in
+-h|--help)
+    echo "usage: $0:t [-k|--kill|-r|--restart], start or stop matlab server"
+    exit
+    ;;
+-k|--kill|-kmp|-r|--restart)
+    # first kill the matlab
+    if [[ $( ps -u $USER ) == *matlab* && -p $IN ]]; then
+	# send EOF to $IN and remove it
+	rm -f $IN $OUT > $IN
+    else
+	rm -f $IN $OUT
+    fi
+    ps -u $USER | while read -A ln; do
+	[[ $ln[4] == matserv && $ln[1] != $$ ]] && kill $ln[1]
+    done
+    # exit for kill
+    [[ $1 == (-k|--kill|-kmp) ]] && exit
+    # continue for restart
+    ;;
+?*)
+    echo "unknown switch $1" 1>&2
+    exit 1
+    ;;
+esac
+
+if [ -p $IN ]; then
+    echo "matserv is running, use -k to kill or -r to restart"
+    exit 2
+fi
+
+# create input, output fifos
+mkfifo -m 600 $IN &&
+mkfifo -m 600 $OUT &&
+# launch MATLAB
+(
+  while [[ -p $IN ]]; do 
+      < $IN;
+  done | $MATLAB_BIN -nosplash -nojvm > $OUT
+) < /dev/null &> /dev/null &
+echo "disp('%%%START')" > $IN;
+while IFS='' read -r ln && [[ $ln != *%%%START ]]; do
+    print -r "$ln"
+done < $OUT
+# (
+# while [[ -n $( echo -n ${IN}(Nmm-${MAXIDLEMIN}) ) ]] &&
+#   [[ $( ps -u $USER ) == *matlab* ]];
+# do
+#     sleep 60
+# done
+# echo "matserv was killed" 1>&2
+# matserv -kmp
+# ) &

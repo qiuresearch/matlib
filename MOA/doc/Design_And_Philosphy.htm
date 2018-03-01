@@ -1,0 +1,65 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Default">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (Win95; I) [Netscape]">
+   <title>Design_And_Philosphy</title>
+</head>
+<body>
+&nbsp;
+<center><font size=+3><b>ToolKit Design and Philosophy</b></font></center>
+<font size=+1></font>
+<p><font size=+1>The MOA toolkit embodies two very simple philosophies.
+Good coding often results when a complicated task is split into small,
+generic modules. The function of each can then be well specified and tested.
+Anything built out of these modules will then avoid many of the unnecessary
+failures.</font>
+<p><font size=+1>The second philosophy is that data structure design is
+too important to perform in early development. Instead, at the lower level
+data should be treated in its natural, unorganized form of arrays and variables.
+To combine this at the higher level, a sloppy mixture of MATLAB built in
+data types and MATLAB global variables are used. While this is ugly, it
+is exceedingly quick and flexible, and once data structures have been stabilized
+it is easy to use them since only higher level functions refer to them.</font>
+<p><font size=+1>These two philosophies are blatant in MOA’s design. Computationally
+intensive tasks are performed by short C routines where image data is stored
+raw in arrays. Examples of these are correct_intensity() in MOA/src/CCD_Correction.c
+and radial_integral() in MOA/src/Integrals.c. Where a task consists of
+distinct stages at which one might conceivably want to alter the method,
+the task has been broken into sub-routines. For example, the dezing() function
+of TV6 has been broken into get_noise_data(), get_noise_stats() and remove_zingers()
+in MOA/src/Zingers.c. This permits the user to examine the noise histogram
+for themself, or set parameters on the statisical dezinger procedure by
+hand, depending on their preference. When each C-routine was developed
+it was benchmarked against a suit of images produced by TV6 to ensure performance.
+Each C-function is given a mex wrapper to allow equivalent access to it
+in MATLAB. That way, full flexibility is retained by the MATLAB user.</font>
+<p><font size=+1>At the higher level, functions have been designed to be
+short, have a common syntax and combine as many features as possible. This
+is because editting or changing such functions is easy. For example, slurp.m
+will load images in 3 distinct modes of image purely from syntax, and a
+user should feel no compunction in changing the one or two lines needed
+to make it perform in a different fashion, provided they document the change.
+To prevent each function from having more than 2, or at most 3 parameters,
+defaults are set using global variables. correct.m uses Intensity_Correct,
+X_Distortion_Map and Y_Distortion_Map. show.m uses MaskD while integrate.m
+uses MaskI, X_cen, Y_cen, Spec_to_Phos and X_Lambda. Please feel free to
+add more, provided you document them and make them consistent.</font>
+<p><font size=+1>When you are done,</font><font size=+1></font>
+<p><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+source code goes in&nbsp; MOA\src</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+executables go&nbsp; to&nbsp;&nbsp;&nbsp;&nbsp; MOA\bin</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+documentation into&nbsp;&nbsp;&nbsp; MOA\doc</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+data into&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+MOA\data</font><font size=+1></font>
+<p><font size=+1>And don't forget to update the file listings wherever
+you go or a double-bladed sword will cut your entrails into a thousand
+pieces - maybe.</font>
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>

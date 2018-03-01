@@ -1,0 +1,253 @@
+#! /bin/zsh
+
+########################################
+# settings
+########################################
+MATSERV=${MATSERV-${HOME}/matserv}
+MATLABPATH=$MATSERV/matlabpath
+MATLABHASH=$MATSERV/matlabhash
+HISTSIZE=200
+SAVEHIST=200
+HISTFILE=$MATSERV/.rmat_history
+MPATH_EXTRA=( /usr/local/matlab/toolbox/symbolic/@sym )
+
+# evaluate arguments:
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    --debug)
+	setopt xtrace
+	;;
+    -h|--help)
+	echo "usage: $0:t [--debug] [-r|--rehash] [-H|--history]"
+	exit
+	;;
+    -H|--history)
+	grep -v '^%%%$' $HISTFILE
+	exit
+	;;
+    -r|--rehash)
+	REHASH=Y
+	;;
+    *)
+	echo "unknown argument $1" 1>&2
+	exit 1
+	;;
+    esac
+    shift
+done
+
+
+# check if matserv is running
+IN=$MATSERV/matserv.in
+if [ ! -p $IN ]; then
+    echo matserv is not running, start it first 1>&2
+    exit 2
+fi
+trap "exit 2" PIPE
+
+# read history
+typeset -a hist
+[[ !  -f $HISTFILE ]] && 
+    touch $HISTFILE
+hist=$( < $HISTFILE )
+hist=( ${(ps:\n%%%\n:)hist} )
+# escape backslash
+hist=( ${hist//'\'/'\\'} )
+for cmd in $hist; do
+    print -s $cmd
+done
+print -s ""
+
+function history()
+{
+    local -i i0 n
+    local nl='
+'
+    n=${1:-10}
+    (( i0 = ${#hist} - $n + 1 ))
+    [[ $i0 -lt 1 ]] &&
+	i0=1
+    for c in $hist[i0,-1]; do
+	echo ${(l:4:: :)i0} ${${hist[$i0]}//$nl/\\n     }
+	(( i0++ ))
+    done
+}
+
+function add_history()
+{
+    local escarg
+    [[ -z "$1" ]] && return;
+    escarg=${1//'\'/'\\'}
+    print -s $escarg
+    hist[${#hist}+1]=$escarg
+}
+
+function write_history
+{
+    local -i h=0
+    (( h = ${#hist} - SAVEHIST ))
+    [[ $h -lt 1 ]] && h=1
+    print ${(j:\n%%%\n:)hist[$h,-1]} > $HISTFILE
+}
+
+function eval_mcmd()
+{
+    local -a cmds
+    case $mcmd in 
+    cd|wcd)
+	cd $HOME
+	;;
+    cd\ *|wcd\ *)
+	add_history $mcmd
+	cmds=( ${(s:;:)mcmd} )
+	eval ${cmds[1]} &&
+	for mfile in *.[mM](N:r); do
+	    hash $mfile=
+	done &&
+	mhash=( *.[mM](N:r) $mhash ) &&
+	if [[ $#cmds -gt 1 ]]; then
+	    echo -E ${(j:;:)cmds[2,-1]} | mat
+	fi
+	stat=$?
+	;;
+    dv|dirs|dirs\ [^\;]##)
+	[[ $mcmd == dv ]] &&
+	    mcmd="dirs -v"
+	eval $mcmd;
+	;;
+    vim|vim\ *)
+	add_history $mcmd
+	mcmd=( ${=mcmd} )
+	integer i;
+	for (( i=2; i <= ${#mcmd}; i++ )) {
+	    if [[ $mcmd[i] != ([+-]*|*[*]*) && ! -f $mcmd[i] ]]; then
+		# try to find it in path
+		mfile=( ${^mpath}/${mcmd[i]}(.[mM])(N[1]) )
+		mcmd[i]=${mfile[1]:-$mcmd[i]}
+	    fi
+	}
+	eval $mcmd;
+	;;
+    %w)
+	write_history
+	;;
+    %(h|h *|history|history *))
+	mcmd=( ${=mcmd} )
+	mcmd[1]=history
+	eval $mcmd
+	;;
+    %![0-9\!\-]##)
+	h=${mcmd[3,-1]}
+	[[ $h == ! ]] &&
+	    h=-1
+	if [ -n $hist[$h] ]; then
+	    mcmd=${hist[$h]}
+	    echo $mcmd
+	    eval_mcmd;
+	else
+	    echo "$mcmd not found"
+	fi
+	;;
+    %![[:alnum:]]##)
+	h=${mcmd[3,-1]}
+	i=${hist[(I)${h}*]}
+	if [[ $i -gt 0 ]]; then
+	    mcmd=${hist[i]}
+	    echo $mcmd
+	    eval_mcmd;
+	else
+	    echo "$mcmd not found"
+	fi
+	;;
+    !*)
+	eval ${mcmd#!};
+	add_history $mcmd
+	;;
+    [[:space:]%]#);
+	# do nothing
+	;;
+    *)
+	add_history $mcmd
+	echo -E $mcmd | mat
+	stat=$?
+	;;
+    esac
+}
+
+WCDHOME=${WCDHOME:-${HOME:-c:/tmp}}
+function wcd()
+{
+    /usr/local/bin/wcd.exe -i "$@"
+    . $WCDHOME/bin/wcd.go
+}
+
+# nice shell settings
+setopt extended_glob
+setopt nolistbeep 
+setopt pushdtohome pushdsilent autopushd pushdignoredups
+setopt complete_in_word
+
+# key bindings
+bindkey "^k" kill-line
+bindkey "^a" beginning-of-line
+bindkey "^e" end-of-line
+bindkey "^n" down-history
+bindkey "^p" up-history
+bindkey -s "\M-j" '^v^j'
+bindkey -s "^xp" '^[ByW$pA'
+bindkey -s "^x^p" '^[ByW$pA'
+bindkey -a "gu" down-case-word
+bindkey -a "g~"  vi-oper-swap-case
+bindkey -a "gU" up-case-word
+bindkey -a "gg" beginning-of-buffer-or-history
+bindkey -a "gG" end-of-buffer-or-history
+bindkey "^b" push-line-or-edit
+bindkey -a "!" push-line-or-edit
+function my-display-history-number () {
+    zle -M "History: $HISTNO"
+}
+zle -N my-display-history-number
+bindkey -a "^g" my-display-history-number
+
+# add matlab hashes
+# first set up mpath - it should be uniq
+typeset -Ua mpath
+# get it from the saved file
+[[ -f $MATLABPATH ]] &&
+    mpath=( $( < $MATLABPATH ) )
+# and if it is not good, ask MATLAB
+if [[ ${#mpath} -eq 0 || $REHASH == Y ]]; then
+    echo "querying for matlabpath"
+    mpath=( ${(s?:?)$(mat cq 'disp(path)')} $MPATH_EXTRA )
+    # save the new path
+    echo "saving matlabpath to $MATLABPATH"
+    echo ${(F)mpath} > $MATLABPATH
+fi
+
+# now the mpath is correctly set, let's get the commands
+typeset -Ua mhash
+if [[ $REHASH == Y || ! -f $MATLABHASH ||
+-n $(find $mpath $MATLABPATH -maxdepth 0 -newer $MATLABHASH) ]]; then
+    echo "updating matlab hashes in $MATLABHASH"
+    mhash=( ${^mpath}/*.[mM](DN:t:r) )
+    echo ${(F)mhash} > $MATLABHASH
+else
+    mhash=( *.[mM](N:r) $( < $MATLABHASH ) )
+fi
+for mfile in $mhash; do
+    hash $mfile=
+done
+
+# some completion niceties:
+compctl -k mhash help doc type
+compctl -f + -k mhash vim edit ovi
+
+trap "write_history; exit" 0 1 2 3 9 11 13 15
+# loop through the entered commands
+stat=0
+while [[ $stat == [01] ]] && mcmd="" &&
+  vared -h -p "`print -P 'rmat %~ %h\n>> '`" mcmd &&
+  [[ ! $mcmd == (:x|exit|:q|quit) ]];
+do
+    [[ -n $mcmd ]] && eval_mcmd || kill -STOP $$
+done

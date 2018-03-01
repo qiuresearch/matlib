@@ -1,0 +1,322 @@
+#!/bin/zsh -if
+# force interactive, do not read RCS files
+emulate -R zsh
+
+########################################
+# settings
+MATSERV=${MATSERV:-${HOME}/m/matserv}
+MATLABPATH=$MATSERV/matlabpath
+MATLABHASH=$MATSERV/matlabhash
+FCEDIT="vim"
+FCARGS=( -X --noplugin '+set ft=matlab' )
+HISTSIZE=777
+SAVEHIST=777
+HISTFILE=$MATSERV/.rmat_history
+MPATH_EXTRA=( /usr/local/matlab/toolbox/symbolic/@sym )
+# RMAT_EMPTY_INPUT options are suspend, exit, ""
+RMAT_EMPTY_INPUT=${RMAT_EMPTY_INPUT:-exit}
+PS1='%Brmat%b %~ %h
+>> '
+PSDEBUG='%Brmat%b %~ %h
+K>> '
+
+########################################
+# shell options
+setopt extended_glob noclobber
+setopt nolistbeep
+setopt pushdtohome pushdsilent autopushd pushdignoredups
+setopt histignorespace extendedhistory hist_no_store
+setopt complete_in_word
+
+# read history
+fc -R
+
+# evaluate arguments:
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    --debug)
+	setopt xtrace
+	;;
+    -h|--help)
+	print "usage: $0:t [--debug] [-r|--rehash] [-H|--history]"
+	exit
+	;;
+    -H|--history)
+	if [[ $# -gt 1 ]]; then
+	    history $argv[2,-1]
+	else
+	    history 1 $HISTSIZE
+	fi
+	exit
+	;;
+    -r|--rehash)
+	REHASH=Y
+	;;
+    *)
+	print "unknown argument $1" 1>&2
+	exit 1
+	;;
+    esac
+    shift
+done
+
+# check if matserv is running
+IN=$MATSERV/matserv.in
+if [ ! -p $IN ]; then
+    print matserv is not running, start it first 1>&2
+    exit 2
+fi
+
+########################################
+# key bindings
+bindkey -s "^z" "^u:suspend^m"
+bindkey "^k" kill-line
+bindkey "^a" beginning-of-line
+bindkey "^e" end-of-line
+bindkey "^n" down-history
+bindkey "^p" up-history
+bindkey "\M-O" vi-open-line-above
+bindkey "\M-o" vi-open-line-below
+bindkey "\M-j" vi-open-line-below
+bindkey "^[j" vi-open-line-below
+bindkey -s "\M-j" '^v^j'
+bindkey -s "^xp"  '!#:$'
+bindkey -s "^x^p" '!#:$'
+bindkey -a "gu" down-case-word
+bindkey -a "g~"  vi-oper-swap-case
+bindkey -a "gU" up-case-word
+bindkey -a "gg" beginning-of-buffer-or-history
+bindkey -a "gG" end-of-buffer-or-history
+bindkey "^b" push-line-or-edit
+bindkey -a "!" push-line-or-edit
+
+function my-display-history-number () {
+    zle -M "History: $HISTNO"
+}
+zle -N my-display-history-number
+bindkey -a "^g" my-display-history-number
+
+function my-edit-command-line () {
+    local tmpfile=${TMPPREFIX:-/tmp/zsh}ecl$$.m
+    print -R - "$PREBUFFER$BUFFER" >$tmpfile
+    exec </dev/tty
+    eval ${FCEDIT:-${VISUAL:-${EDITOR:-vi}}} +go$((CURSOR+1)) $tmpfile
+    BUFFER="$(<$tmpfile)" 
+    command rm -f $tmpfile
+    zle accept-line
+}
+zle -N my-edit-command-line
+bindkey -M vicmd v my-edit-command-line
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^n" history-beginning-search-forward-end
+bindkey "^p" history-beginning-search-backward-end
+autoload -U compinit
+compinit
+bindkey "\e," _history-complete-newer
+bindkey "\e/" _history-complete-older
+bindkey "\M-," _history-complete-newer
+bindkey "\M-/" _history-complete-older
+
+########################################
+# functions
+c_nl=$'\n'
+
+function my_fclist()
+{
+    cat $1
+    print >| $1
+}
+
+function my_fcedit()
+{
+    $FCEDIT $FCARGS $1
+    cp $1 $FCTMPFILE &&
+    print >| $1
+}
+
+function eval_mcmd()
+# eval_mcmd nohist would evaluate without adding to history
+{
+    local nohist=${argv[(r)nohist]} mcmd4hist=$mcmd
+    local -a cmds
+    case "$mcmd" in
+    cd|wcd)
+	cd $HOME
+	;;
+    cd\ *|wcd\ *)
+	cmds=( ${mcmd%%[;$c_nl]*} ${(M)mcmd%%[;$c_nl]*} );
+	eval ${cmds[1]} &&
+	for mfile in *.[mM](N:r); do
+	    hash $mfile=
+	done &&
+	mhash=( *.[mM](N:r) $mhash ) &&
+	if [[ -n $cmds[2] ]]; then
+	    mcmd=${cmds[2]}
+	    eval_mcmd nohist
+	fi
+	;;
+    dv|dirs|dirs\ [^\;]##)
+	[[ $mcmd == dv ]] &&
+	    mcmd="dirs -v"
+	eval $mcmd;
+	nohist=nohist
+	;;
+    vim|vim\ *)
+	mcmd=( ${=mcmd} )
+	integer i;
+	for (( i=2; i <= ${#mcmd}; i++ )) {
+	    if [[ $mcmd[i] != ([+-]*|*[*]*) && ! -f $mcmd[i] ]]; then
+		# try to find it in path
+		mfile=( ${^mpath}/${mcmd[i]}(.[mM])(N[1]) )
+		mcmd[i]=${mfile[1]:-$mcmd[i]}
+	    fi
+	}
+	eval $mcmd;
+	;;
+    :fc|:fc\ *)
+	cmds=( ${(M)${=mcmd}:#[0-9-]##} )
+	case ${#cmds} in
+	    0)	cmds=( -1 -1 )
+		;;
+	    1)  cmds=( ${cmds} ${cmds} )
+		;;
+	esac
+	FCTMPFILE=/tmp/rmat$$$RANDOM.tmp
+	fc -e my_fcedit $cmds[1,2]
+	mcmd4hist=$( < $FCTMPFILE ) &&
+	{
+	    print -r -- $mcmd4hist;
+	    if [[ $mcmd4hist == (fc:*|zsh:*|:fc|:fc *) ]]; then
+		# ignore it
+		nohist=nohist
+	    else
+		mcmd=$mcmd4hist
+		eval_mcmd nohist
+	    fi
+	}
+	rm -f $FCTMPFILE
+	;;
+    :suspend)
+	nohist=nohist
+	fc -W
+	kill -STOP $$
+	;;
+    :w)
+	fc -W
+	print history written
+	nohist=nohist
+	;;
+    :(h|history)([[:blank:]]*)#)
+	eval noglob "${mcmd/:h(istory)#/history}"
+	nohist=nohist
+	;;
+    :!|:(-|)[0-9]##)
+	h=${=mcmd[2,-1]}
+	[[ $h == '!' ]] && h=-1
+	mcmd=$( fc -e my_fclist $h $h )
+	mcmd4hist=$mcmd
+	if [[ $mcmd == *[[:alnum:]]* ]]; then
+	    print -- $mcmd
+	    eval_mcmd;
+	else
+	    print -- "event not found" 1>&2
+	    nohist=nohist
+	fi
+	;;
+    !*)
+	eval ${mcmd#!};
+	print -rs $mcmd
+	;;
+    [[:space:]]#[:%#]*);
+	# do nothing
+	;;
+    *)
+	print -r -- $mcmd | mat
+	stat=$?
+	if [[ $stat -ge 10 ]]; then
+	    (( stat = stat - 10 ))
+	    DEBUG_FLAG=1
+	else
+	    unset DEBUG_FLAG
+	fi
+	;;
+    esac
+    if [[ -z $nohist && $mcmd4hist == *[^[:space:]]* ]]; then
+	print -rs $mcmd4hist
+    fi
+}
+
+WCDHOME=${WCDHOME:-${HOME:-c:/tmp}}
+function wcd()
+{
+    $HOME/bin/wcd.exe -i "$@"
+    . $WCDHOME/bin/wcd.go
+}
+
+
+########################################
+# add matlab hashes
+# first set up mpath - it should be uniq
+typeset -Ua mpath
+# get it from the saved file
+[[ -f $MATLABPATH ]] &&
+    mpath=( $( < $MATLABPATH ) )
+# and if it is not good, ask MATLAB
+if [[ ${#mpath} == 0 || $REHASH == Y ]]; then
+    print "querying for matlabpath"
+    mpath=( ${(s?:?)$(mat cq 'disp(path)')} $MPATH_EXTRA )
+    # save the new path
+    print "saving matlabpath to $MATLABPATH"
+    print -l ${mpath} >| $MATLABPATH
+fi
+########################################
+# now the mpath is correctly set, let's hash the mfiles
+typeset -Ua mhash
+mhash=( :{fc,h,history,w} )
+if [[ $REHASH == Y || ! -f $MATLABHASH ||
+-n $(find $mpath $MATLABPATH -maxdepth 0 -newer $MATLABHASH) ]]; then
+    print "updating matlab hashes in $MATLABHASH"
+    mhash=( $mhash ${^mpath}/*.[mM](N:t:r) )
+    print -l ${mhash} >| $MATLABHASH
+else
+    mhash=( $mhash *.[mM](N:r) $( < $MATLABHASH ) )
+fi
+for mfile in $mhash; do
+    hash $mfile=
+done
+
+########################################
+# some completion niceties:
+compctl -k mhash help doc type clear
+compctl -f + -k mhash vim edit ovi
+
+########################################
+# everything set, loop through the commands
+stat=0
+while [[ $stat == [01] ]];
+do
+    mcmd=
+    vared -e -h -p ${${DEBUG_FLAG+$PSDEBUG}:-$PS1} mcmd || continue
+
+    case $mcmd in
+    (:x|exit|:q|quit)
+	break
+	;;
+    ("")
+	case $RMAT_EMPTY_INPUT in
+	(suspend)
+	    fc -W && kill -STOP $$
+	    ;;
+	(exit)
+	    break
+	    ;;
+	esac
+	;;
+    (*)
+	eval_mcmd;
+	;;
+    esac
+done
+fc -W

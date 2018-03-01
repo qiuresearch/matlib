@@ -1,0 +1,115 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Organizational Listing of Functions and Scripts</TITLE>
+</HEAD>
+<BODY>
+
+<U><FONT SIZE=5><P ALIGN="CENTER"></P>
+<P ALIGN="CENTER">Organizational Listing of Functions and Scripts</P>
+</U></FONT><FONT SIZE=4>
+<P>Global variables : </P>
+<P>&#9;&#9;&#9;X_Distortion_Map – used by correct.m</P>
+<P>&#9;&#9;&#9;Y_Distortion_Map – used by correct.m </P>
+<P>&#9;&#9;&#9;Intensity_Correct – used by correct.m </P>
+<P>&#9;&#9;&#9;X_cen – used by integrater.m and caycegrater.m</P>
+<P>&#9;&#9;&#9;Y_cen – used by integrater.m and caycegrater.m</P>
+<P>&#9;&#9;&#9;X_Lambda – used by integrater.m </P>
+<P>&#9;&#9;&#9;Spec_to_Phos – used by integrater.m </P>
+<P>&#9;&#9;&#9;MaskD – used by show.m</P>
+<P>&#9;&#9;&#9;MaskI  - used by integrater.m and caycegrater.m </P>
+<B>
+<P>Loading Images</B> -&#9;slurp, average_tag, get_tag, imread</P>
+
+<B><P>Correcting Images</B> – correct.m, correct_intensity, correct_distortion, dezing, get_noise_stats, get_noise_data, remove_zingers.</P>
+
+<B><P>Displaying Data</B> -  show, plotter, plot, imagesc</P>
+
+<B><P>Processing Data</B> – integrater, caycegrate, mask, radial_integral, roi, guinier, kratky, pixel_to_q</P>
+
+<B><P>Calibration</B> – circle, spec_to_phos, integrater.  </P>
+<P>  </P>
+
+</FONT><U><FONT SIZE=6><P ALIGN="CENTER">Alphabetic Function and Script Listing</P>
+</U></FONT><FONT SIZE=4>
+<P>&nbsp;</P>
+<B><P>average_tag.m</B> -  Returns the average value of the tags for a group of images.</P>
+
+<B><P>caycegrate.m</B> -  Integration routine which supports negative radii.</P>
+
+<B><P>circle.m</B> -  Plots a circle on screen.  Useful for finding the image centre.</P>
+<B>
+<P>correct.m</B> -&#9;Does image intensity and distortion correction.  Type help correct for more information.</P>
+
+<B><P>correct_intensity.mex.c, correct_intensity.m, correct_intensity.dll,</P>
+<P>correct_distortion.mex.c, correct_distortion.m, correct_distortion.dll,</P>
+<P>CCD_Correction.c</B> -  Fundamental correction routines.  Type help ...</P>
+
+<B><P>dezing.m</B> &#9;-  Dezingers images.  Type help dezing for more information.</P>
+
+<B><P>get_tag.mex.c, get_tag.m, get_tag.c</B> –  A very cruddy hack to import into Matlab the A to D information saved by TV6 1K.  This should definitely be improved as soon as humanly possible.  However, the present design is pretty flexible.</P>
+
+<B><P>guinier.m</B> -  Converts an array of q=Ival(:,1), Intensity=Ival(:,2) into G(:,1)=q squared and G(:,2)= log(Intensity), thereby making a Guinier transform.</P>
+
+<B><P>integrater.m</B> -  Does integrals using X_cen, Y_cen, Spec_to_Phos and X_Lambda along with MaskI.</P>
+
+<B><P>mask.m</B> -  Generates the mask of an image.  Typical call is of the form,</P>
+
+<P>&#9;&#9;mymask = mask(x);</P>
+
+<P>which allows user to interactively define mymask, a selected region (or mask) of image x.  Masks are used to select regions of an image for display, integration or other purposes.</P>
+
+<B><P>new_calibration.m</B> – Short script to delete old Spec_to_Phos.</P>
+<B>
+<P>pixel_to_q.m</B> – Converts a vector of angles measured in pixels into reciprocal Angstroms. </P>
+
+<B><P>plotter.m</B> -  Handy little shortcut for plotting results of integrater and guinier.</P>
+
+<B><P>radial_integral.mex.c, radial_integral.m, Integrate.c</B> -  Fundamental integral routine. </P>
+
+<B><P>roi.m</B> -  Used to examine the numerical behaviour around an image.  The call,</P>
+<P>&#9;roi(x)</P>
+<P>plots x and lets you pick out polygons in x.  For each polygon, the mean, maximum and minimum pixel values in that region are returned.</P>
+<B>
+<P>roipoly_mod1.m, axes2pix.m, intline.m</B> -  Functions stolen from the matlab image processing toolkit and slightly changed, although the functionality is almost identical.  All that is changed from roipoly.m is that it uses our version of show.m rather than imshow.  Used by the <B>mask</B> and <B>box</B> commands.</P>
+
+<B><P>slurp.m</B> &#9;- Loads images into memory.  Eg,</P>
+
+<P>&#9;&#9;&#9;x1= slurp(‘ag’,[0,2:4]);</P>
+<P>&#9;loads the average of ag0.tif, ag2.tif, ag3.tif and ag4.tif into x1.  </P>
+<P>&#9;It removes zingers, averages, distortion and intensity corrects.</P>
+<P>&#9;No flux correction though as no background is given.</P>
+
+<P>&#9;&#9;&#9;x2=slurp(‘ag’,[1:2],[0,4]);</P>
+<P>&#9;makes the signal the average of ag1.tif and ag2.tif.</P>
+<P>&#9;makes the background the average of ag0.tif and ag4.tif.</P>
+<P>&#9;takes the background from signal, and then scales using the </P>
+<P>&#9;beam intensity values.</P>
+
+<P>&#9;Go help slurp for more info.</P>
+
+<B><P>startup.m</B>  &#9;-  Must be run before using any other functions.  Declares all global variables used by other routines.  These are,</P>
+
+<P>&#9;Intensity_Correct – A 512*512 array of singles used by correct.m</P>
+<P>&#9;X_Distortion_Map - A 512*125 array of singles used by correct.m</P>
+<P>&#9;Y_Distortion_Map – A 512*512 array of singles used by correct.m</P>
+<P>&#9;X_cen – Location of beam in x-direction. (vertical)</P>
+<P>&#9;Y_cen – Location of beam in the y-direction. (horizontal)</P>
+<P>&#9;Spec_to_Phos  - Distance from specimen to phosphor in pixels.</P>
+<P>&#9;X_Lambda – Wavelength of X-rays in Angstrom.</P>
+<P>&#9;MaskD – Default mask used by routine disp.</P>
+<P>&#9;&#9;-  A uint8 array of size 512*512.</P>
+<P>&#9;MaskI -  Default mask used by routine integrate.</P>
+<P>&#9;&#9;-  A uint8 array of size 512*512.</P>
+<P> </P>
+<B><P>show.m</B> -  Displays images loaded with slurp.m.  Uses MaskD to cut out bits people aren’t interested in.  Type help show for details.</P>
+<P>  </P>
+<B><P>spec_to_phos.m</B> -  A hacky function for determining specimen to phosphorous distance assuming you used a laminar calibrant, and have measured off some rings.</P>
+
+<B><P>get_noise_stats.mex.c, get_noise_stats.m, get_noise_stats.dll, get_noise_data.mex.c, get_noise_data.m, get_noise_data.dll,</P>
+<P>remove_zingers.mex.c, remove_zingers.m, remove_zingers.dll,</P>
+<P>Zingers.c</B> &#9;- Fundamental dezingering routines.  Type help ... </P>
+
+<P>&nbsp;</P></FONT></BODY>
+</HTML>

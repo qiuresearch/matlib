@@ -1,0 +1,8 @@
+function I = initialise( r1,r2,l,L,lambda,dlambda,pixelsize)
+I.r1 = r1;
+I.r2 = r2;
+I.l  = l;
+I.L  = L;
+I.lambda = lambda;
+I.dlambda = dlambda;
+I.pixelsize = pixelsize;

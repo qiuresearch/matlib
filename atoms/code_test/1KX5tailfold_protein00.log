@@ -1,0 +1,57 @@
+  C R Y S O L    Version 2.8.2  -- 14/09/12
+ 
+ 
+ -- Program  started  at   17-Feb-2013   18:46:21--
+ 
+ --------  Real space resolution and grid  -------- 
+ 
+  Maximum order of harmonics ............................ : 50
+  Order of Fibonacci grid ............................... : 18
+  Total number of directions ............................ : 4182
+ 
+ ------------  Reciprocal space grid  -------------
+ 
+   in s = 4*pi*sin(theta)/lambda [1/angstrom] 
+  Maximum scattering angle .............................. : 0.5000
+  Number of angular points .............................. : 251
+ 
+ --- Structural parameters (sizes in angstroms) --- 
+ 
+ PDB file name .......................................... : 1KX5tailfold_protein.pdb
+  Number of atoms read .................................. : 7586
+ Geometric Center:   47.631   90.102    6.056
+  Number of carbons read ................................ : 4734
+  Number of nitrogens read .............................. : 1502
+  Number of oxigens read ................................ : 1338
+  Number of sulfur atoms read ........................... : 12
+ For   23  zero directions radius    3.39 assumed
+ Center of the excess electron density:  0.092 -0.071  0.028
+ Electron   Rg   :  33.87       Envelope   Rg      :  36.14    
+ Shape      Rg   :  33.79       Envelope  volume   : 0.2102E+06
+ Shell    volume : 0.4996E+05   Envelope  surface  : 0.1537E+05
+ Shell      Rg   :  44.11       Envelope  radius   :  64.57    
+ Shell    width  :  3.000       Envelope  diameter :  128.0    
+ Molecular Weight: 0.1079E+06   Dry volume         : 0.1308E+06
+ Displaced volume: 0.1359E+06   Average atomic rad.:  1.623    
+ Number of residuals :     974
+ 
+ -- No data fitting, parameters entered manually --
+ 
+ Solvent density ........................................ : 0.3340
+ Contrast of the solvation shell ........................ : 0.0
+ Average atomic radius .................................. : 1.623
+ Excluded Volume ........................................ : 1.359e+5
+ Average atomic volume .................................. : 17.91
+ Radius of gyration from atomic structure
+ Rg ( Atoms - Excluded volume + Shell ) ................. : 34.16
+ Rg from the slope of net intensity ..................... : 34.45
+ Average electron density ............................... : 0.4265
+  
+ ----------------  Output files  ------------------
+  
+ Coefficients   saved to file 1KX5tailfold_protein00.flm
+ CRYSOL data    saved to file 1KX5tailfold_protein00.sav
+ Intensities    saved to file 1KX5tailfold_protein00.int
+ Net amplitudes saved to file 1KX5tailfold_protein00.alm
+ 
+  C R Y S O L    Version 2.8.2  -- 14/09/12 ----  terminated at   17-Feb-2013   18:47:10--

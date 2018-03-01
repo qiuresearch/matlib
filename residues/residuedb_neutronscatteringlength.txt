@@ -1,0 +1,173 @@
+Amino Acids
+
+Glycine (Gly or G) 
+Hydrogenated C2NOH3 1.72 1.43 2.60 
+H/D_Exchange C2NOH2D 2.77 1.45 4.16 
+Deuterated C2NOD3 4.85 1.50 7.30 
+D/H_Exchange C2NOHD2 3.81 1.48 5.73 
+
+Alanine (Ala or A) 
+Hydrogenated C3NOH5 1.64 1.29 1.79 
+H/D_Exchange C3NOH4D 2.68 1.31 2.93 
+Deuterated C3NOD5 6.85 1.38 7.48 
+D/H_Exchange C3NOHD4 5.80 1.36 6.34 
+
+Valine (Val or V) 
+Hydrogenated C5NOH9 1.47 1.16 1.04 
+H/D_Exchange C5NOH8D 2.52 1.17 1.78 
+Deuterated C5NOD9 10.84 1.27 7.65 
+D/H_Exchange C5NOHD8 9.80 1.25 6.92 
+
+Leucine (Leu or L) 
+Hydrogenated C6NOH11 1.39 1.12 8.28 
+H/D_Exchange C6NOH10D 2.43 1.13 1.45 
+Deuterated C6NOD11 12.84 1.23 7.65 
+D/H_Exchange C6NOHD10 11.80 1.22 7.03 
+
+Isoleucine (Ilu or I) 
+Hydrogenated C6NOH11 1.39 1.11 8.24 
+H/D_Exchange C6NOH10D 2.43 1.12 1.44 
+Deuterated C6NOD11 12.84 1.22 7.61 
+D/H_Exchange C6NOHD10 11.80 1.21 6.99 
+
+Phenylalanine (Phe or F)
+Hydrogenated C9NOH9 4.13 1.20 2.03 
+H/D_Exchange C9NOH8D 5.17 1.21 2.54 
+Deuterated C9NOD9 13.50 1.27 6.64 
+D/H_Exchange C9NOHD8 12.46 1.27 6.13 
+
+Tyrosine (Tyr or Y)
+Hydrogenated C9NO2H9 4.71 1.33 2.31 
+H/D_Exchange C9NO2H7D2 6.79 1.35 3.34 
+Deuterated C9NO2D9 14.08 1.40 6.92 
+D/H_Exchange C9NO2H2D7 12.00 1.39 5.89 
+
+Tryptophan (Trp or W) 
+Hydrogenated C11N2OH10 6.02 1.30 2.54 
+H/D_Exchange C11N2OH8D2 8.11 1.32 3.41 
+Deuterated C11N2OD10 16.43 1.37 6.92 
+D/H_Exchange C11N2OH2D8 14.35 1.36 6.04 
+
+Aspartate (Asp or D) 
+Hydrogenated C4NO3H4 3.84 1.67 3.38 
+H/D_Exchange C4NO3H3D 4.88 1.68 4.30 
+Deuterated C4NO3D4 8.00 1.73 7.05 
+D/H_Exchange C4NO3HD3 6.96 1.71 6.13 
+
+Glutamate (Glu or E) 
+Hydrogenated C5NO3H6 3.76 1.51 2.67 
+H/D_Exchange C5NO3H5D 4.80 1.52 3.41 
+Deuterated C5NO3D6 10.00 1.58 7.11 
+D/H_Exchange C5NO3HD5 8.96 1.57 6.37 
+
+Serine (Ser or S) 
+Hydrogenated C3NO2H5 2.22 1.46 2.24 
+H/D_Exchange C3NO2H3D2 4.30 1.49 4.34 
+Deuterated C3NO2D5 7.43 1.54 7.49 
+D/H_Exchange C3NO2H2D3 5.34 1.51 5.39 
+
+Threonine (Thr or T) 
+Hydrogenated C4NO2H7 2.14 1.37 1.75 
+H/D_Exchange C4NO2H5D2 4.22 1.40 3.46 
+Deuterated C4NO2D7 9.43 1.47 7.72 
+D/H_Exchange C4NO2H2D5 7.34 1.44 6.01 
+
+Asparagine (Asn or N)
+Hydrogenated C4N2O2H6 3.45 1.40 2.55 
+H/D_Exchange C4N2O2H3D3 6.57 1.44 4.86 
+Deuterated C4N2O2D6 9.69 1.47 7.17 
+D/H_Exchange C4N2O2H3D3 6.57 1.44 4.86 
+
+Glutamine (Gln or Q) 
+Hydrogenated C5N2O2H8 3.36 1.32 2.09 
+H/D_Exchange C5N2O2H5D3 6.49 1.35 4.03 
+Deuterated C5N2O2D8 11.69 1.40 7.26 
+D/H_Exchange C5N2O2H3D5 8.57 1.37 5.32 
+
+Lysine (Lys or K) 
+Hydrogenated C6N2OH13 1.58 1.22 8.96 
+H/D_Exchange C6N2OH9D4 5.74 1.25 3.26 
+Deuterated C6N2OD13 15.11 1.34 8.58 
+D/H_Exchange C6N2OH4D9 10.95 1.30 6.21 
+
+Arginine (Arg or R) 
+Hydrogenated C6N4OH13 3.45 1.44 1.91 
+H/D_Exchange C6N4OH8D5 9.70 1.50 5.36 
+Deuterated C6N4OD13 16.984 1.56 9.39 
+D/H_Exchange C6N4OH5D8 10.74 1.51 5.94 
+
+Histidine (His or H) 
+Hydrogenated C6N3OH7 4.96 1.36 2.84 
+H/D_Exchange C6N3OH5D2 6.84 1.38 4.09 
+Deuterated C6N3OD7 12.05 1.43 7.20 
+D/H_Exchange C6N3OH2D5 9.96 1.41 5.96 
+
+Methionine (Met or M) 
+Hydrogenated C5NOSH9 1.76 1.28 1.03 
+H/D_Exchange C5NOSH8D 2.80 1.29 1.64 
+Deuterated C5NOSD9 11.13 1.36 6.52 
+D/H_Exchange C5NOSHD8 10.09 1.35 5.91 
+
+Cysteine (Cys or C) 
+Hydrogenated C3NOSH5 1.93 1.62 1.82 
+H/D_Exchange C3NOSH3D2 4.00 1.65 3.79 
+Deuterated C3NOSD5 7.13 1.70 6.75 
+D/H_Exchange C3NOSH2D3 5.05 1.67 4.78 
+
+Proline (Pro or P) 
+Hydrogenated C5NOH7 2.22 1.25 1.72 
+H/D_Exchange C5NOH7 2.22 1.25 1.72 
+Deuterated C5NOD7 9.51 1.34 7.36 
+D/H_Exchange C5NOD7 9.51 1.34 7.35 
+
+DNA Nucleotides 
+
+Adenine (Ade or A)
+Hydrogenated PN5O5C10H11 10.63 
+H/D_Exchange PN5O5C10H9D2 12.71 
+Deuterated PN5O5C10D11 22.08 
+D/H_Exchange PN5O5C10H2D9 20.00 
+
+Guanine (Gua or G)
+Hydrogenated PN5O6C10H11 11.21 
+H/D_Exchange PN5O6C10H8D3 14.33 
+Deuterated PN5O6C10D11 22.66 
+D/H_Exchange PN5O6C10H3D8 19.54 
+
+Cytosine (Cyt or C)
+Hydrogenated PN3O6C9H11 8.67 
+H/D_Exchange PN3O6C9H9D2 10.75 
+Deuterated PN3O6C9D11 20.12 
+D/H_Exchange PN3O6C9H2D9 18.04 
+
+Thymine (Thy or T)
+Hydrogenated PN2O7C10H12 8.61 
+H/D_Exchange PN2O7C10H11D1 9.65 
+Deuterated PN2O7C10D12 21.10 
+D/H_Exchange PN2O7C10H1D11 20.06 
+
+RNA Nucleotides 
+
+Adenine (Ade or A)
+Hydrogenated PN5O6C10H11 11.21 
+H/D_Exchange PN5O6C10H8D3 14.33 
+Deuterated PN5O6C10D11 22.66 
+D/H_Exchange PN5O6C10H3D8 19.54 
+
+Guanine (Gua or G)
+Hydrogenated PN5O7C10H11 11.79 
+H/D_Exchange PN5O7C10H7D4 15.95 
+Deuterated PN5O7C10D11 23.24 
+D/H_Exchange PN5O7C10H4D7 19.08 
+
+Cytosine (Cyt or C)
+Hydrogenated PN3O7C9H11 9.25 
+H/D_Exchange PN3O7C9H8D3 12.37 
+Deuterated PN3O7C9D11 20.70 
+D/H_Exchange PN3O7C9H3D8 17.58 
+
+Urasil (Ura or U)
+Hydrogenated PN2O8C9H10 9.27 
+H/D_Exchange PN2O8C9H8D2 11.35 
+Deuterated PN2O8C9D10 19.68 
+D/H_Exchange PN2O8C9H2D8 17.60 

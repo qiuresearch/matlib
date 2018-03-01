@@ -1,0 +1,132 @@
+  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<META NAME="GENERATOR" CONTENT="TtH 2.20">
+                                                                     
+
+<p>
+ 
+<title> De-Zingering Algorithms for X-ray Detectors</title>
+ 
+<H1 align=center>De-Zingering Algorithms for X-ray Detectors </H1>
+
+<H3 align=center>Gil Toombes </H3>
+
+<H3 align=center>21 June, 2000 </H3>
+
+
+<p>
+        <H2><A NAME="tth_sEc1">
+1</A>&nbsp;&nbsp;Introduction</H2>
+When using a phosphor CCD X-ray detector each image will have a random distribution of bright spots called zingers.  Zingers are cosmic rays, alpha particle decay and other radioactive events measured by the detector.  Although few pixels have zingers they tend to dominate averaging processes because of their great intensity.  In all but the brightest images they need to be identified and eliminated.  One technique for doing so is statistical dezingering.
+
+<p>
+In Section <A href="#Zinger_Model">2</A> a simple statistical model for detector noise is presented.  Section <A href="#Seeing_Noise">3</A> outlines a method to measure the noise characteristics of the detector by comparing images.  An automated procedure for obtaining the modelling parameters is given in Section <A href="#Estimating_Parameters">4</A>.  Section <A href="#Stat_Dezing">5</A> shows how to eliminate zingers from multiple images using the statistical model.
+
+<p>
+        <H2><A NAME="tth_sEc2">
+2</A>&nbsp;&nbsp;Zinger Noise Model</H2>
+<A NAME="Zinger_Model">
+</A>
+Consider a pixel in the detector illuminated with X-rays.  To get better response from the electronics, the CCD readout, I<sub>signal</sub>, is a non-zero number, I<sub>black &nbsp;&nbsp;level</sub>,  when no X-rays hit the detector.  I<sub>black &nbsp;&nbsp;level</sub> is measured in a separate process to regular image acquisition.  If the gain of the detector is <sup>1</sup>/<sub>g</sub>, n X-rays hit the pixel and no zinger occurs, the signal should be
+
+<centEr><table border=0 align=center><tr><td>
+<Table align=left><tr><td nowrap align=center>
+I<sub>signal</sub> = I<sub>black &nbsp;&nbsp;level</sub> + </td><td nowrap align=center>
+n<hr NOSHADE> g<Br></td><td nowrap align=center>
+.</td></Table>
+</td><td width=100 align=right>(1)</td></table></centEr>
+
+
+
+<p>
+There are three main reasons I<sub>signal</sub> will vary.  Firstly, the detector electronics give readout noise which gives a variance of <font face=symbol>s</font
+><sub>o</sub><sup>2</sup> to I<sub>signal</sub>.  Next, n is a Poisson variable with a variance of n.  This contributes an independent variance of g ( &lt; I<sub>signal</sub> &gt;  - I<sub>black &nbsp;&nbsp;level</sub>).  Together, they give a standard deviation of ,
+<A NAME="magic">
+</A>
+<centEr><table border=0 align=center><tr><td>
+<Table align=left><tr><td nowrap align=center>
+<font face=symbol>s</font
+>( &lt; I<sub>signal</sub> &gt; ) = </td><td align=left class="cl"><font face=symbol size="+2">Ö</font></td><td nowrap align=center>
+<hr NOSHADE><font face=symbol>s</font
+><sub>o</sub><sup>2</sup> + g ( &lt; I<sub>signal</sub> &gt;  - I<sub>black &nbsp;&nbsp;level</sub> )<Br>&nbsp;<br></td><td nowrap align=center>
+. </td></Table>
+</td><td width=100 align=right>(2)</td></table></centEr>
+
+
+
+<p>
+Finally, occasionally I<sub>signal</sub> will be influenced by zingers.  In principle this should always increase the intensity of I<sub>signal</sub> enormously.  Using Equation <A href="#magic">2</A>, it shouldn't be too hard to detect and eliminate zingers and one procedure is outlined in Section <A href="#Stat_Dezing">5</A>. 
+
+<p>
+        <H2><A NAME="tth_sEc3">
+3</A>&nbsp;&nbsp;Analysing Detector Noise Behaviour by Image Comparison</H2>
+<A NAME="Seeing_Noise">
+</A>
+One method for quantifying detector behaviour is to take multiple exposures of the same object and compare them.  For each pixel it is then possible to compute ( &lt; I<sub>signal</sub> &gt;  , <font face=symbol>s</font
+>).  With a sample of these pairs one can test Equation <A href="#magic">2</A> or measure <font face=symbol>s</font
+><sub>o</sub>, g and I<sub>black &nbsp;&nbsp;level</sub>.  Such a sampling is performed by the routine, <b>get_noise_data()</b> in <b>Zingers.c</b>. 
+
+<p>
+Averaging the values at a pixel is a poor way to obtain  &lt; I<sub>signal</sub> &gt;  as a bright zinger in one value will cause a large positive deviation.  The median is far less susceptible, and for an even number, N of images, the <sup>N</sup>/<sub>2</sub>th ascending value is preferable to the [(N+2)/ 2]th ascending value.
+
+<p>
+At present the variance of a pixel, <font face=symbol>s</font
+><sup>2</sup> is calculated by a standard statistical average.  Using the half-width of the distribution of values at each pixel is a superior method.  
+
+<p>
+<b>get_noise_data()</b> samples a specified fraction of values in a specified subsection of the detector field.  It returns the values of  &lt; I<sub>signal</sub> &gt;  and <font face=symbol>s</font
+><sup>2</sup> at each sampled point.  These permit analysis of the detector behaviour.
+
+<p>
+        <H2><A NAME="tth_sEc4">
+4</A>&nbsp;&nbsp;Estimating Noise Model Parameters by Image Comparison</H2>
+<A NAME="Estimating_Parameters">
+</A>
+Assuming that Equation <A href="#magic">2</A> is valid, there are many ways to determine <font face=symbol>s</font
+><sub>o</sub>, g and I<sub>black &nbsp;&nbsp;level</sub>.  This section describes the heuristic algorithm <b>get_noise_stats()</b> in <b>Zingers.c</b>.  
+
+<p>
+<b>get_noise_stats()</b> works in three steps.  First, it estimates  I<sub>black &nbsp;&nbsp;level</sub>=bkg and <font face=symbol>s</font
+><sub>o</sub>=sigma by assuming most of the image was not exposed to X-rays or was uniformly illuminated.  Next, it uses these rough estimates (along with an assumed gain of MEAN_GAIN) to break the data into three disjoint subsets.  Points which have been zingered are rejected outright.  Points without signal are used to refine sigma.  Points exposed to X-rays are used to refine g=gain.
+
+<p>
+If the majority of the image is uniformly exposed or unexposed, the median  &lt; I<sub>signal</sub> &gt;  will be close to I<sub>black &nbsp;&nbsp;level</sub>=bkg.  Similarly, if the variances are ordered into an ascending list, the 64.3% point should give a rough estimate of sigma.  If it doesn't the estimate is bounded below by SIGMA_MIN and above by SIGMA_MAX.  Either way, this gives a good first estimate of sigma and bkg.  
+
+<p>
+The estimate of sigma can be improved by excluding zingered and exposed points.  Zingered points are defined as those for which the standard deviation is more than SIGMA_CUT*sigma where SIGMA_CUT=5.  Unexposed points are defined as those for which  &lt; I<sub>signal</sub> &gt;  is not more than SIGMA_BOUND*sigma+bkg.  The average variance of unexposed, unzingered points is taken to refine sigma.
+
+<p>
+The gain can be estimated from exposed, unzingered points.  Zingered points are those for which the standard deviation is greater than SIGMA_CUT <font face=symbol>s</font
+>.  Exposed points have  &lt; I<sub>signal</sub> &gt;  at least SIGMA_GAIN_LOW*sigma above background.  If more than MIN_DATA_FOR_REG points are exposed and unzingered, a regression is performed to determine gain.  The result is not allowed to stray outside the range (GAIN_MIN, GAIN_MAX).  
+
+<p>
+This completes the algorithm as bkg, sigma and gain have all been estimated.
+  
+<p>
+There are a number of weaknesses in the algorithm.  If the initial assumption that much of the image is unexposed is not true, then the initial estimates of Iblack &nbsp;&nbsp;level and <font face=symbol>s</font
+> will be badly wrong, throwing off the rest of the calculation.  Also, if the signal is too weak no regression is possible.  However, it seems to execute well on most images.
+
+<p>
+        <H2><A NAME="tth_sEc5">
+5</A>&nbsp;&nbsp;Removing Zingers by Image Comparison</H2>
+<A NAME="Stat_Dezing">
+</A>
+
+<p>
+Statistical Dezingering is performed by the function, <b>remove_zingers()</b> in <b>Zingers.c</b>.  Consider a pixel on N identical images.   The average intensity can be estimated by the median value.  If <font face=symbol>s</font
+><sub>o</sub>, g and I<sub>black &nbsp;&nbsp;level</sub> are all known, <font face=symbol>s</font
+> can then be predicted.  The probability that an individual intensity value lies outside of <font face=symbol>±</font
+>5<font face=symbol>s</font
+> is less than one in a million unless a zinger occurs.  Conversely, if a value contains a zinger it will easily lie outside this range.  Excluding all such values should eliminate zingers without eliminating information about the X-ray image.  Then a simple average can be taken.  This is the basic method of <b>remove_zingers()</b>.    
+
+<p>
+At each point, <b>remove_zingers()</b> calculates the median intensity of the N images.  If N is even, there will be a systematic underestimate from taking the <sup>N</sup>/<sub>2</sub>th value.  A small offset is added to this in that case, although this point is not particularly significant.  <font face=symbol>s</font
+> is then calculated, and any points outside the range <font face=symbol>±</font
+>sigma_cut &times;<font face=symbol>s</font
+> are excluded.  Finally, an average is taken.  <b>remove_zingers()</b> also returns the number of zingers found.
+
+<p>
+
+<p><hr><small>File translated from T<sub><font size="-1">E</font></sub>X by <a href="http://hutchinson.belmont.ma.us/tth/">T<sub><font size="-1">T</font></sub>H</a>, version 2.20.<br>On 15 Jul 2000, 18:11.</small>
+</HTML>

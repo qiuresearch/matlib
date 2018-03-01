@@ -1,0 +1,133 @@
+/* The portal to radial_integral() in Integral.c
+   Written on 21 June, 2000.
+   See radial_integral.m for detail
+
+   Note the hassle with x-y in going from matlab to c.
+   Rows in matlab correspond to x in C.
+   Columns in matlab correspond to y in C
+*/
+
+#include "mex.h"
+#include "string.h"
+#include "Integrate.c"
+
+void mexFunction(
+	  int nlhs, mxArray *plhs[],
+	  int nrhs, const mxArray*prhs[] )
+     {
+
+	 /* Variables needed by radial_integral */
+		double *image; uint8 *mask; 
+		int width, height;
+		double xcen, ycen;
+		double *q; double *Intensity;
+		double r_min, r_max;
+		int Num_Bins; int mode;
+
+		/* Variables needed for loading and unloading.*/
+		mxClassID data_type;
+		int mrows, ncols;
+		double *x;
+		char *option; int status;
+		int i,j;
+		
+		/* Check number of outputs and inputs.*/
+		if ((nrhs!=6)&&(nrhs!=7))
+		  {mexErrMsgTxt("Six or seven inputs required.");}
+      if (nlhs!=2) 
+        {mexErrMsgTxt("Need two outputs");}
+	
+
+ /* STEP ONE - Get the image and width*height
+		    Get the double array and check it is the right type.*/
+      if (!mxIsDouble(prhs[0])|| mxIsComplex(prhs[0]))
+ 	   mexErrMsgTxt("Image input should be an array of noncomplex doubles.");
+      width=mxGetM(prhs[0]);
+      height=mxGetN(prhs[0]);  
+      image = mxGetPr(prhs[0]); 
+
+      /* STEP TWO - Get the mask */
+      data_type=mxGetClassID(prhs[1]);	       
+      mrows=mxGetM(prhs[1]); 
+      ncols=mxGetN(prhs[1]);  
+
+  	   if ((data_type!=mxUINT8_CLASS)|| mxIsComplex(prhs[1])||
+			 (mrows!=width)||(ncols!=height))
+ 	       mexErrMsgTxt("Mask must be a noncomplex UINT8 array the same size as image.");  
+    	mask = (char *)mxGetData(prhs[1]);  
+
+
+      /* STEP THREE - Get [xcen, ycen] */
+      mrows=mxGetM(prhs[2]);
+      ncols=mxGetN(prhs[2]);  
+      if (!mxIsDouble(prhs[2])|| mxIsComplex(prhs[2])||
+          ((mrows*ncols)!=2))
+ 	   mexErrMsgTxt("x must be 2 element noncomplex double array.");
+      x = mxGetPr(prhs[2]);  		
+      xcen=x[0]; ycen=x[1]; /* Note the ordering.*/
+
+     /* STEP FOUR - Get r_min */
+      mrows=mxGetM(prhs[3]); ncols=mxGetN(prhs[3]);  
+      if (!mxIsDouble(prhs[3])|| mxIsComplex(prhs[3]) || 
+          !(mrows==1 && ncols==1) )
+ 	     mexErrMsgTxt("r_min must be a noncomplex scalar double.");		
+      r_min = mxGetScalar(prhs[3]); 
+
+      /* STEP FIVE - Get r_max */
+      mrows=mxGetM(prhs[4]); ncols=mxGetN(prhs[4]);  
+      if (!mxIsDouble(prhs[4])|| mxIsComplex(prhs[4]) || 
+        !(mrows==1 && ncols==1) )
+ 	     mexErrMsgTxt("r_max must be a noncomplex scalar double.");		
+      r_max = mxGetScalar(prhs[4]); 
+		
+      /* STEP SIX - Get r_max */
+      mrows=mxGetM(prhs[5]); ncols=mxGetN(prhs[5]);  
+      if (!mxIsDouble(prhs[5])|| mxIsComplex(prhs[5]) || 
+        !(mrows==1 && ncols==1) )
+ 	     mexErrMsgTxt("Num_Bins must be a positive real number.");		
+      Num_Bins = (int)(0.5+mxGetScalar(prhs[5])); 
+		
+               /* Check the integration region is physical */
+		if (Num_Bins < 1)
+			mexErrMsgTxt("Num_Bins must be greater than zero.");
+		if ((r_min<0)||(r_max<0))
+			mexErrMsgTxt("r_min and r_max must be greater than zero");
+		if (r_min>r_max) 
+			mexErrMsgTxt("r_min must be less than r_max");
+
+	/* STEP SEVEN - Work out the integration mode */
+		if (nrhs==7)
+		{ /* load the options string.*/
+           if (mxIsChar(prhs[6])!=1)
+	          {mexErrMsgTxt("Integration option must be a string.");}
+           if (mxGetM(prhs[6])!=1) 
+             {mexErrMsgTxt("String must be a row vector.");}
+           ncols=mxGetN(prhs[6])+1;  /* Allocating memory */
+	        option=mxCalloc(ncols,sizeof(char));
+           status=mxGetString(prhs[6],option,ncols);
+           if (status!=0)
+	         mexWarnMsgTxt("Not enough space.  String truncated.");
+	        
+	                        /*Check it is a real option*/
+	                        if (strcmp(option,"pixel")==0) mode = 0;
+				else if (strcmp(option,"none")==0) mode =2;
+				else if (strcmp(option,"radial")==0) mode=1;
+				else mexErrMsgTxt("Invalid integration option.");
+				mxFree(option);		
+		}
+		else 
+			mode = 0;
+
+  
+	/* STEP EIGHT -  Allocate memory for q and I */
+		 plhs[0] = mxCreateDoubleMatrix(1,Num_Bins,mxREAL);
+         q=mxGetPr(plhs[0]);
+    	 plhs[1] = mxCreateDoubleMatrix(1,Num_Bins,mxREAL);
+		 Intensity=mxGetPr(plhs[1]);
+
+	/* STEP NINE -  Call radial_integral */
+	radial_integral(image,mask,width,height,xcen,ycen,
+			q, Intensity, r_min, r_max, Num_Bins, mode);
+     
+     }
+

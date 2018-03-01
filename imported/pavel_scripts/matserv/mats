@@ -1,0 +1,108 @@
+#!/bin/zsh -f
+
+MATSERV=${MATSERV-${HOME}/m/matserv}
+IN=$MATSERV/matserv.in
+OUT=$MATSERV/matserv.out
+LOG=$MATSERV/matserv.log
+
+case "$1" in
+h|-h|--help) 
+	cat <<- END
+	usage: $0:t [qQ] [{c|r} cmd ] [-h(elp)]
+	       $0:t --unlock
+	  send command[s] cmd and also standard input
+	  to the MATLAB server
+	options:
+	    c,r following arguments are commands
+	    q   brief output
+	    Q   suppress all output
+	END
+	exit
+	;;
+--unlock)
+	rm -f $IN.lock $OUT.lock
+	exit
+	;;
+esac
+
+IF=; CMD=;
+OF=( sed )
+OFOPT='/%%%MATSERV$/d
+      1s/^\(EDU>> *\)\+//
+      1s/\(EDU>> *\)\+$//
+      1s/^\(>> *\)\+//
+      1s/\(>> *\)\+$//
+      /^EDU>> \?$/d'
+OFOPT='s/^\(EDU>> \?\|>> \?\)\+//g'
+
+# definition for the exit codes
+ERR_MAT=1
+ERR_ENG=2
+ERR_PROG=3
+DEBUG_FLAG=0
+
+while [[ $# -gt 0 && -z "$CMD" ]]; do
+    case $1 in 
+    *[^crqQ-]*)	print "unknown switch $1" 1>&2;
+	exit $ERR_PROG
+	;;
+    *)
+	[[ $1 == *q* ]] &&
+	    OFOPT=$OFOPT'
+	    /^[[:space:]]*$/d
+	    /^[[:alpha:]][[:alnum:]_]* =$/d'
+	[[ $1 == *Q* ]] &&
+	    OFOPT="d"
+	[[ $1 == *[cr]* ]] &&
+	    CMD="${argv[2,-1]} "
+	;;
+    esac
+    shift
+done
+    
+CMD=${CMD% ##}
+if [[ -z "$CMD" || $( tty ) == "not a tty" ]]; then
+    IF="cat"
+fi
+if [[ ! -p $IN || ! -p $OUT ]]; then
+    print matserv is not running, start it first 1>&2
+    exit $ERR_ENG
+fi
+
+# try to lock with 3 retries, wait 1s
+lockfile -1 -r 3 $IN.lock $OUT.lock
+if [[ $? != 0 ]]; then
+    print "$0:t is running, force unlock with $0:t --unlock" 2>&1
+    exit $ERR_ENG
+fi
+
+trap "rm -f $IN.lock $OUT.lock; exit $ERR_ENG" 1 2 3 13 15
+{ 
+    print "cd $PWD; %%%MATSERV"
+    print -r -- $CMD
+    $IF
+    print "disp('%%%END_OF_MAT');"
+} > $IN
+
+# wait for done string
+IFS=
+{
+while read -r ln && [[ $ln != *%%%END_OF_MAT ]]; do
+    print -r -- $ln
+done < $OUT
+} | $OF $OFOPT |
+{
+# check for error string in the first line...
+RETVAL=0
+read -r ln1
+if [[ $ln1 == K\>\>* ]]; then
+    DEBUG_FLAG=10
+    ln1=${ln1//K>> }
+fi
+[[ $ln1 == \?\?\?\ * ]] &&
+    RETVAL=$ERR_MAT
+print -r $ln1
+cat
+}
+rm -f $IN.lock $OUT.lock
+exit $(( RETVAL + DEBUG_FLAG ))

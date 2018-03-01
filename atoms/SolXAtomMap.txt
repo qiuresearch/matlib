@@ -1,0 +1,618 @@
+*********************************************************************************************
+** File Name: SolXAtomMap.txt
+**
+** Format: ATOM   ATOME_NAME  ATOM_TPYE   ELECTRON_NUMBER   RESIDUE   MOLECULE
+**
+**	ATOM:  Indicator for Program molX. Every row marked ATOM will be read in by molX. Column Position: 1-4. 
+**	ATOME_NAME: 3-4 letters atom types. Column Position: 7-10.
+**	RESIDUE: Residue name.  Column Position: 13-16.
+**	ATOME_TYPE: Three letters atom types. Column Position: 19-22.
+**	MOLECULE: Molecule type.  Column Position: 25-28.  
+*********************************************************************************************
+
+****  TPYE  CHARGE  RESD  MOLE
+***********************************************************************
+** GENERIC TYPE ATOMS AND ATOMIC GROUPS
+**
+** DATA LIST #1
+***********************************************************************
+MODULE BEGIN GEN GENERIC TYPE **
+
+ATOM  H     H     ANY   GEN 
+ATOM  He    He    ANY   GEN
+ATOM  LI    LI    ANY   GEN
+ATOM  LI1   LI1   ANY   GEN
+ATOM  BE    BE    ANY   GEN
+ATOM  B     B     ANY   GEN
+ATOM  C     C     ANY   GEN 
+ATOM  CH    CH    ANY   GEN 
+ATOM  CH2   CH2   ANY   GEN 
+ATOM  CH3   CH3   ANY   GEN 
+ATOM  N     N     ANY   GEN 
+ATOM  NH    NH    ANY   GEN 
+ATOM  NH2   NH2   ANY   GEN 
+ATOM  NH3   NH3   ANY   GEN 
+ATOM  O     O     ANY   GEN 
+ATOM  OH    OH    ANY   GEN 
+ATOM  O1    O1    ANY   GEN
+ATOM  O2    O2    ANY   GEN
+ATOM  P     P     ANY   GEN
+ATOM  F     F     ANY   GEN
+ATOM  F1    F1    ANY   GEN
+ATOM  Cl    Cl    ANY   GEN
+ATOM  Re    Re    ANY   GEN
+ATOM  Sn    Sn    ANY   GEN
+ATOM  Zn    Zn    ANY   GEN
+ATOM  Mn    Mn    ANY   GEN
+ATOM  Fe2   Fe2   ANY   GEN
+ATOM  Ti    Ti    ANY   GEN
+ATOM  CX    CX    ANY   GEN // C
+ATOM  CY    CY    ANY   GEN // CH
+ATOM  Rh    Rh    ANY   GEN
+ATOM  Rh3   Rh3   ANY   GEN
+ATOM  Si    Si    ANY   GEN 
+ATOM  I     I     ANY   GEN
+ATOM  Au    Au    ANY   GEN
+ATOM  O     H2O   HOH   GEN
+
+
+MODULE END GEN **
+
+***********************************************************************
+** Nucleic Acid atoms definition
+**
+** DATA LIST #2
+***********************************************************************
+MODULE BEGIN NUA NUCLEIC ACIDS **
+
+// Sugar + phosphate
+ATOM  P     P     ANY   NUC                        
+ATOM  O1P   OH    ANY   NUC                                           
+ATOM  O2P   O     ANY   NUC
+ATOM  O3P   O     ANY   NUC                                                    
+ATOM  OP1   OH    ANY   NUC                                                    
+ATOM  OP2   O     ANY   NUC
+ATOM  OP2   O     ANY   NUC                                                     
+ATOM  O5*   O     ANY   NUC                                                    
+ATOM  C5*   CH2   ANY   NUC                                                    
+ATOM  C2*   CH2   ANY   NUC                                                    
+ATOM  C4*   CH    ANY   NUC                                          
+ATOM  O4*   O     ANY   NUC                                          
+ATOM  C1*   CH    ANY   NUC                                          
+ATOM  C3*   CH    ANY   NUC                                          
+ATOM  O3*   OH    ANY   NUC  // DNA SUGUAR                           
+ATOM  O2*   OH    ANY   NUC  // RNA SUGUAR  
+ATOM  O5'   O     ANY   NUC                               
+ATOM  C5'   CH2   ANY   NUC                
+ATOM  C2'   CH2   ANY   NUC                
+ATOM  C4'   CH    ANY   NUC                
+ATOM  O4'   O     ANY   NUC                
+ATOM  C1'   CH    ANY   NUC                
+ATOM  C3'   CH    ANY   NUC                
+ATOM  O3'   OH    ANY   NUC  // DNA SUGUAR 
+ATOM  O2'   OH    ANY   NUC  // RNA SUGUAR   
+
+
+// Modified-RNA Jan, 2007
+ATOM  CM1   CH3   ANY   NUC
+ATOM  CM2   CH3   ANY   NUC	
+ATOM  CM3   CH3   ANY   NUC
+ATOM  CM4   CH3   ANY   NUC
+ATOM  CM5   CH3   ANY   NUC
+ATOM  CM6   CH3   ANY   NUC   
+ATOM  CM7   CH3   ANY   NUC
+ATOM  CM8   CH3   ANY   NUC
+ATOM  CM9   CH3   ANY   NUC
+ATOM  CM1   CH3   ANY   NUC 
+
+ATOM  C     C     ANY   NUC
+ATOM  CH    CH    ANY   NUC	
+ATOM  CH2   CH2   ANY   NUC
+ATOM  CH3   CH3   ANY   NUC
+ATOM  O     O     ANY   NUC
+ATOM  O1    O1    ANY   NUC   
+ATOM  OH    OH    ANY   NUC
+ATOM  N     N     ANY   NUC
+ATOM  NH    NH    ANY   NUC
+                                                                 
+// Adenine	
+ATOM  N9    N     A     NUC 	
+ATOM  C4    C     A     NUC  
+ATOM  N3    N     A     NUC  
+ATOM  C2    CH    A     NUC  
+ATOM  N1    N     A     NUC  
+ATOM  C6    C     A     NUC  
+ATOM  N6    NH2   A     NUC  
+ATOM  C5    C     A     NUC 
+ATOM  N7    N     A     NUC 
+ATOM  C8    CH    A     NUC  
+                                                                    
+ATOM  N9    N     ADE   NUC 	
+ATOM  C4    C     ADE   NUC  
+ATOM  N3    N     ADE   NUC  
+ATOM  C2    CH    ADE   NUC  
+ATOM  N1    N     ADE   NUC  
+ATOM  C6    C     ADE   NUC  
+ATOM  N6    NH2   ADE   NUC  
+ATOM  C5    C     ADE   NUC 
+ATOM  N7    N     ADE   NUC 
+ATOM  C8    CH    ADE   NUC 
+	                                                                              
+// Cytomine	                                                                              
+ATOM  N1    N     C     NUC  
+ATOM  C6    CH    C     NUC  
+ATOM  C2    C     C     NUC 
+ATOM  O2    O     C     NUC 
+ATOM  N3    N     C     NUC  
+ATOM  C4    C     C     NUC  
+ATOM  N4    NH2   C     NUC  
+ATOM  C5    CH    C     NUC   
+                     
+ATOM  N1    N     CYT   NUC 
+ATOM  C6    CH    CYT   NUC 
+ATOM  C2    C     CYT   NUC 
+ATOM  O2    O     CYT   NUC 
+ATOM  N3    N     CYT   NUC 
+ATOM  C4    C     CYT   NUC 
+ATOM  N4    NH2   CYT   NUC 
+ATOM  C5    CH    CYT   NUC 
+
+		        						                        
+// Guanine		        						                        
+ATOM  N9    N     G     NUC 
+ATOM  C4    C     G     NUC 
+ATOM  N3    N     G     NUC 
+ATOM  C2    C     G     NUC 
+ATOM  N2    NH2   G     NUC 
+ATOM  N1    NH    G     NUC 
+ATOM  C6    C     G     NUC 
+ATOM  O6    O     G     NUC 
+ATOM  C5    C     G     NUC 
+ATOM  N7    N     G     NUC 
+ATOM  C8    CH    G     NUC
+ 
+ATOM  N9    N     GUA   NUC 
+ATOM  C4    C     GUA   NUC 
+ATOM  N3    N     GUA   NUC 
+ATOM  C2    C     GUA   NUC 
+ATOM  N2    NH2   GUA   NUC 
+ATOM  N1    NH    GUA   NUC 
+ATOM  C6    C     GUA   NUC 
+ATOM  O6    O     GUA   NUC 
+ATOM  C5    C     GUA   NUC 
+ATOM  N7    N     GUA   NUC 
+ATOM  C8    CH    GUA   NUC 
+	                                                                              
+// Thymine	                                                                              
+ATOM  N1    N     T     NUC      
+ATOM  C6    CH    T     NUC  
+ATOM  C2    C     T     NUC  
+ATOM  O2    O     T     NUC   
+ATOM  N3    NH    T     NUC  
+ATOM  C4    C     T     NUC  
+ATOM  O4    O     T     NUC  
+ATOM  C5    C     T     NUC  
+ATOM  C7    CH3   T     NUC 
+ATOM  C5A   CH3   T     NUC        
+ATOM  C5M   CH3   T     NUC
+     
+ATOM  N1    N     THY   NUC      
+ATOM  C6    CH    THY   NUC  
+ATOM  C2    C     THY   NUC  
+ATOM  O2    O     THY   NUC   
+ATOM  N3    NH    THY   NUC  
+ATOM  C4    C     THY   NUC  
+ATOM  O4    O     THY   NUC  
+ATOM  C5    C     THY   NUC  
+ATOM  C7    CH3   THY   NUC 
+ATOM  C5A   CH3   THY   NUC        
+ATOM  C5M   CH3   THY   NUC        
+	                                                                             
+// Uracil	                                                                             
+ATOM  N1    N     U     NUC
+ATOM  C6    CH    U     NUC
+ATOM  C2    C     U     NUC
+ATOM  O2    O     U     NUC
+ATOM  N3    NH    U     NUC 
+ATOM  C4    C     U     NUC 
+ATOM  O4    O     U     NUC 
+ATOM  C5    CH    U     NUC 
+
+ATOM  N1    N     URA   NUC
+ATOM  C6    CH    URA   NUC
+ATOM  C2    C     URA   NUC
+ATOM  O2    O     URA   NUC
+ATOM  N3    NH    URA   NUC 
+ATOM  C4    C     URA   NUC 
+ATOM  O4    O     URA   NUC 
+ATOM  C5    CH    URA   NUC 
+
+ATOM  N1    N     URI   NUC
+ATOM  C6    CH    URI   NUC
+ATOM  C2    C     URI   NUC
+ATOM  O2    O     URI   NUC
+ATOM  N3    NH    URI   NUC 
+ATOM  C4    C     URI   NUC 
+ATOM  O4    O     URI   NUC 
+ATOM  C5    CH    URI   NUC 
+MODULE END NUA **
+
+*************************************************************************************************
+** PROTEIN 
+**
+** DATA LIST #3
+*************************************************************************************************
+MODULE BEGIN PRT PROTEINS**
+
+// Alanine   		(ALA)
+ATOM  OXT   OH    ALA   PRT	// C terminal OXT; HOOC-CA-NH-|-co-
+ATOM  NT    NH2   ALA   PRT // N termial NH3+ (NH2 TYPE); -hn-|-CO-CA-NH3+
+ATOM  N     NH    ALA   PRT	// AA Unit in middle; -ca-hn-|-CO-CA-NH-|-co-ca
+ATOM  CA    CH    ALA   PRT
+ATOM  C     C     ALA   PRT
+ATOM  O     O     ALA   PRT
+ATOM  CB    CH3   ALA   PRT
+              
+// Arginine 		(ARG) 
+ATOM  OXT   OH    ARG   PRT  
+ATOM  NT    NH2   ARG   PRT         
+ATOM  N     NH    ARG   PRT
+ATOM  CA    CH    ARG   PRT
+ATOM  C     C     ARG   PRT
+ATOM  O     O     ARG   PRT
+ATOM  CB    CH2   ARG   PRT
+ATOM  CG    CH2   ARG   PRT
+ATOM  CD    CH2   ARG   PRT
+ATOM  NE    NH    ARG   PRT
+ATOM  CZ    C     ARG   PRT
+ATOM  NH1   NH2   ARG   PRT
+ATOM  NH2   NH2   ARG   PRT
+               
+// Asparagine 		(ASN)  
+ATOM  OXT   OH    ASN   PRT 
+ATOM  NT    NH2   ASN   PRT 	
+ATOM  N     NH    ASN   PRT 	
+ATOM  CA    CH    ASN   PRT 
+ATOM  C     C     ASN   PRT 
+ATOM  O     O     ASN   PRT 
+ATOM  CB    CH2   ASN   PRT 
+ATOM  CG    C     ASN   PRT 
+ATOM  OD1   O     ASN   PRT 
+ATOM  ND2   NH2   ASN   PRT 
+     
+//Aspartic acid		(ASP)   
+ATOM  OXT   OH    ASP   PRT
+ATOM  NT    NH2   ASP   PRT 
+ATOM  N     NH    ASP   PRT 
+ATOM  CA    CH    ASP   PRT 
+ATOM  C     C     ASP   PRT 
+ATOM  O     O     ASP   PRT 
+ATOM  CB    CH2   ASP   PRT 
+ATOM  CG    C     ASP   PRT 
+ATOM  OD1   O     ASP   PRT 
+ATOM  OD2   OH    ASP   PRT 
+         
+// ASP/ASN ambiguous  	(ASX)
+ATOM  OXT   OH    ASX   PRT
+ATOM  NT    NH2   ASX   PRT
+ATOM  N     NH    ASX   PRT 
+ATOM  CA    CH    ASX   PRT 
+ATOM  C     C     ASX   PRT 
+ATOM  O     O     ASX   PRT 
+ATOM  CB    CH2   ASX   PRT 
+ATOM  CG    C     ASX   PRT 
+ATOM  OD1   O     ASX   PRT 
+ATOM  OD2   OH    ASX   PRT   
+ATOM  ND2   NH2   ASX   PRT        
+
+// Cysteine  		(CYS)   
+ATOM  OXT   OH    CYS   PRT
+ATOM  NT    NH2   CYS   PRT
+ATOM  N     NH    CYS   PRT
+ATOM  CA    CH    CYS   PRT
+ATOM  C     C     CYS   PRT
+ATOM  O     O     CYS   PRT
+ATOM  CB    CH2   CYS   PRT
+ATOM  SG    SH    CYS   PRT
+
+// Glutamine     	(GLN)
+ATOM  OXT   OH    GLN   PRT
+ATOM  NT    NH2   GLN   PRT
+ATOM  N     NH    GLN   PRT
+ATOM  CA    CH    GLN   PRT
+ATOM  C     C     GLN   PRT
+ATOM  O     O     GLN   PRT
+ATOM  CB    CH2   GLN   PRT
+ATOM  CG    CH2   GLN   PRT
+ATOM  CD    C     GLN   PRT
+ATOM  OE1   O     GLN   PRT
+ATOM  NE2   NH2   GLN   PRT
+      
+// Glutamic acid   	(GLU) 
+ATOM  OXT   OH    GLU   PRT
+ATOM  NT    NH2   GLU   PRT
+ATOM  N     NH    GLU   PRT
+ATOM  CA    CH    GLU   PRT
+ATOM  C     C     GLU   PRT
+ATOM  O     O     GLU   PRT
+ATOM  CB    CH2   GLU   PRT
+ATOM  CG    CH2   GLU   PRT
+ATOM  CD    C     GLU   PRT
+ATOM  OE1   O     GLU   PRT
+ATOM  OE2   OH    GLU   PRT
+    
+// GLU/GLN ambiguous  	(GLX)
+ATOM  OXT   OH    GLX   PRT
+ATOM  NT    NH2   GLX   PRT
+ATOM  N     NH    GLX   PRT
+ATOM  CA    CH    GLX   PRT
+ATOM  C     C     GLX   PRT
+ATOM  O     O     GLX   PRT
+ATOM  CB    CH2   GLX   PRT
+ATOM  CG    CH2   GLX   PRT
+ATOM  CD    C     GLX   PRT
+ATOM  OE1   O     GLX   PRT
+ATOM  NE2   NH2   GLX   PRT
+ATOM  OE2   OH    GLX   PRT
+     
+// Glycine  		(GLY)
+ATOM  OXT   OH    GLY   PRT
+ATOM  NT    NH2   GLY   PRT
+ATOM  N     NH    GLY   PRT
+ATOM  CA    CH    GLY   PRT
+ATOM  C     C     GLY   PRT
+ATOM  O     O     GLY   PRT
+               
+// Histidine   		(HIS)
+ATOM  OXT   OH    HIS   PRT
+ATOM  NT    NH2   HIS   PRT
+ATOM  N     NH    HIS   PRT
+ATOM  CA    CH    HIS   PRT
+ATOM  C     C     HIS   PRT
+ATOM  O     O     HIS   PRT
+ATOM  CB    CH2   HIS   PRT
+ATOM  CG    C     HIS   PRT
+ATOM  ND1   NH    HIS   PRT
+ATOM  CD2   CH    HIS   PRT
+ATOM  CE1   CH    HIS   PRT
+ATOM  NE2   N     HIS   PRT
+
+// Isoleucine  		(ILE)  
+ATOM  OXT   OH    ILE   PRT
+ATOM  NT    NH2   ILE   PRT
+ATOM  N     NH    ILE   PRT
+ATOM  CA    CH    ILE   PRT
+ATOM  C     C     ILE   PRT
+ATOM  O     O     ILE   PRT
+ATOM  CB    CH    ILE   PRT
+ATOM  CG1   CH2   ILE   PRT
+ATOM  CG2   CH3   ILE   PRT
+ATOM  CD1   CH3   ILE   PRT
+       
+// Leucine   		(LEU)      
+ATOM  OXT   OH    LEU   PRT
+ATOM  NT    NH2   LEU   PRT
+ATOM  N     NH    LEU   PRT
+ATOM  CA    CH    LEU   PRT
+ATOM  C     C     LEU   PRT
+ATOM  O     O     LEU   PRT
+ATOM  CB    CH2   LEU   PRT
+ATOM  CG    CH    LEU   PRT
+ATOM  CD1   CH3   LEU   PRT
+ATOM  CD2   CH3   LEU   PRT
+
+// Lysine  		(LYS)
+ATOM  OXT   OH    LYS   PRT
+ATOM  NT    NH2   LYS   PRT 
+ATOM  N     NH    LYS   PRT
+ATOM  CA    CH    LYS   PRT
+ATOM  C     C     LYS   PRT
+ATOM  O     O     LYS   PRT
+ATOM  CB    CH2   LYS   PRT
+ATOM  CG    CH2   LYS   PRT
+ATOM  CD    CH2   LYS   PRT
+ATOM  CE    CH2   LYS   PRT
+ATOM  NZ    NH2   LYS   PRT
+                
+// Methionine    	(MET) 
+ATOM  OXT   OH    MET   PRT
+ATOM  NT    NH2   MET   PRT
+ATOM  N     NH    MET   PRT
+ATOM  CA    CH    MET   PRT
+ATOM  C     C     MET   PRT
+ATOM  O     O     MET   PRT
+ATOM  CB    CH2   MET   PRT 
+ATOM  CG    CH2   MET   PRT 
+ATOM  SD    SH    MET   PRT 
+ATOM  CE    CH3   MET   PRT 
+    
+// Phenylalanine  	(PHE)
+ATOM  OXT   OH    PHE   PRT
+ATOM  NT    NH2   PHE   PRT
+ATOM  N     NH    PHE   PRT
+ATOM  CA    CH    PHE   PRT
+ATOM  C     C     PHE   PRT
+ATOM  O     O     PHE   PRT
+ATOM  CB    CH2   PHE   PRT
+ATOM  CG    C     PHE   PRT
+ATOM  CD1   CH    PHE   PRT
+ATOM  CD2   CH    PHE   PRT
+ATOM  CE1   CH    PHE   PRT
+ATOM  CE2   CH    PHE   PRT
+ATOM  CZ    CH    PHE   PRT
+   
+// Proline  		(PRO) 
+ATOM  OXT   OH    PRO   PRT
+ATOM  NT    NH    PRO   PRT
+ATOM  N     N     PRO   PRT
+ATOM  CA    CH    PRO   PRT
+ATOM  C     C     PRO   PRT
+ATOM  O     O     PRO   PRT
+ATOM  CB    CH2   PRO   PRT
+ATOM  CG    CH2   PRO   PRT
+ATOM  CD    CH2   PRO   PRT
+
+// Serine    		(SER) 
+ATOM  OXT   OH    SER   PRT
+ATOM  NT    NH2   SER   PRT   
+ATOM  N     NH    SER   PRT
+ATOM  CA    CH    SER   PRT
+ATOM  C     C     SER   PRT
+ATOM  O     O     SER   PRT
+ATOM  CB    CH2   SER   PRT
+ATOM  OG    OH    SER   PRT
+    
+// Threonine      	(THR)   
+ATOM  OXT   OH    THR   PRT
+ATOM  NT    NH2   THR   PRT  
+ATOM  N     NH    THR   PRT
+ATOM  CA    CH    THR   PRT
+ATOM  C     C     THR   PRT
+ATOM  O     O     THR   PRT
+ATOM  CB    CH    THR   PRT
+ATOM  OG1   OH    THR   PRT
+ATOM  CG2   CH3   THR   PRT
+  
+// Tryptophan  		(TRP)  
+ATOM  OXT   OH    TRP   PRT
+ATOM  NT    NH2   TRP   PRT
+ATOM  N     NH    TRP   PRT
+ATOM  CA    CH    TRP   PRT
+ATOM  C     C     TRP   PRT
+ATOM  O     O     TRP   PRT
+ATOM  CB    CH2   TRP   PRT
+ATOM  CG    C     TRP   PRT
+ATOM  CD1   CH    TRP   PRT
+ATOM  CD2   C     TRP   PRT
+ATOM  NE1   NH    TRP   PRT
+ATOM  CE2   C     TRP   PRT
+ATOM  CE3   CH    TRP   PRT
+ATOM  CZ2   CH    TRP   PRT
+ATOM  CZ3   CH    TRP   PRT
+ATOM  CH2   CH    TRP   PRT
+
+
+// Tyrosine    		(TYR)
+ATOM  OXT   OH    TYR   PRT
+ATOM  NT    NH2   TYR   PRT 
+ATOM  N     NH    TYR   PRT
+ATOM  CA    CH    TYR   PRT
+ATOM  C     C     TYR   PRT
+ATOM  O     O     TYR   PRT
+ATOM  CB    CH2   TYR   PRT
+ATOM  CG    C     TYR   PRT
+ATOM  CD1   CH    TYR   PRT
+ATOM  CD2   CH    TYR   PRT
+ATOM  CE1   CH    TYR   PRT
+ATOM  CE2   CH    TYR   PRT
+ATOM  CZ    C     TYR   PRT
+ATOM  OH    OH    TYR   PRT
+ 
+
+// Valine        	(VAL)
+ATOM  OXT   OH    VAL   PRT
+ATOM  NT    NH2   VAL   PRT 
+ATOM  N     NH    VAL   PRT 
+ATOM  CA    CH    VAL   PRT
+ATOM  C     C     VAL   PRT
+ATOM  O     O     VAL   PRT
+ATOM  CB    CH    VAL   PRT
+ATOM  CG1   CH3   VAL   PRT
+ATOM  CG2   CH3   VAL   PRT
+
+
+     
+// Undetermined  	(UNK)
+
+ATOM  O     H2O   HOH   PRT
+ATOM  Zn    Zn    HOH   PRT
+
+// HSE
+ATOM  N     NH2   HSE   PRT
+ATOM  ND1   N     HSE   PRT
+ATOM  CA    CH2   HSE   PRT
+ATOM  CB    CH2   HSE   PRT
+ATOM  CG    C     HSE   PRT
+ATOM  CE1   CH    HSE   PRT
+ATOM  NE2   NH    HSE   PRT
+ATOM  C     C     HSE   PRT
+ATOM  CD2   CH    HSE   PRT
+ATOM  O     O     HSE   PRT                  
+                  
+                  
+// HEM
+ATOM  FE    Fe2   HEM   PRT
+ATOM  NA    N     HEM   PRT
+ATOM  NB    N     HEM   PRT
+ATOM  NC    N     HEM   PRT
+ATOM  ND    N     HEM   PRT
+ATOM  C1A   C     HEM   PRT
+ATOM  CHA   CH    HEM   PRT
+ATOM  C4D   C     HEM   PRT
+ATOM  C1B   C     HEM   PRT
+ATOM  CHB   CH    HEM   PRT
+ATOM  C4A   C     HEM   PRT
+ATOM  C1C   C     HEM   PRT
+ATOM  CHC   CH    HEM   PRT
+ATOM  C4B   C     HEM   PRT
+ATOM  C1D   C     HEM   PRT
+ATOM  CHD   CH    HEM   PRT
+ATOM  C4C   C     HEM   PRT
+ATOM  C2A   C     HEM   PRT
+ATOM  CAA   CH2   HEM   PRT
+ATOM  C3A   C     HEM   PRT
+ATOM  CMA   CH3   HEM   PRT
+ATOM  CBA   CH2   HEM   PRT
+ATOM  CGA   C     HEM   PRT
+ATOM  O1A   O1    HEM   PRT
+ATOM  O2A   O1    HEM   PRT
+ATOM  C2B   C     HEM   PRT
+ATOM  CMB   CH3   HEM   PRT
+ATOM  C3B   C     HEM   PRT
+ATOM  CAB   CH2   HEM   PRT
+ATOM  CBB   CH3   HEM   PRT
+ATOM  C2C   C     HEM   PRT
+ATOM  CMC   CH3   HEM   PRT
+ATOM  C3C   C     HEM   PRT
+ATOM  CAC   CH2   HEM   PRT
+ATOM  CBC   CH3   HEM   PRT
+ATOM  C2D   C     HEM   PRT
+ATOM  CMD   CH3   HEM   PRT
+ATOM  C3D   C     HEM   PRT
+ATOM  CAD   CH2   HEM   PRT
+ATOM  CBD   CH2   HEM   PRT
+ATOM  CGD   C     HEM   PRT
+ATOM  O1D   O1    HEM   PRT
+ATOM  O2D   O1    HEM   PRT
+
+// ANY
+ATOM  C     C     ANY   PRT
+ATOM  CH    CH    ANY   PRT
+ATOM  CH2   CH2   ANY   PRT
+ATOM  N     N     ANY   PRT
+ATOM  NH    NH    ANY   PRT
+ATOM  NH2   NH2   ANY   PRT
+ATOM  O     O     ANY   PRT
+ATOM  OH    OH    ANY   PRT
+ATOM  ZN2   Zn2   ANY   PRT
+
+MODULE END PRT **
+
+
+*************************************************************************************************
+** ELEMENTS 
+**
+** DATA LIST #4
+*************************************************************************************************
+MODULE BEGIN ELM ELEMENTS**
+
+MODULE END ELM
+
+*************************************************************************************************
+** UNKNOWN 
+**
+** DATA LIST #5
+*************************************************************************************************
+MODULE BEGIN UNK UNKNOWNS**
+
+MODULE END UNK

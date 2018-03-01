@@ -1,0 +1,43 @@
+D/atoms////
+D/debugging////
+D/electrostatics////
+D/fluidynamics////
+D/graphics////
+D/imported////
+D/iqgetx////
+D/obsolete////
+D/sasa////
+D/spectroscopy////
+D/sqtools////
+D/osmotic////
+D/residues////
+D/MOA////
+/.cvsignore/1.1/Tue Mar  1 03:54:45 2011//
+D/howell////
+D/fileio////
+D/curvefit////
+D/cnt_graphene////
+/xydata_avg.m/1.2/Wed Jan  2 04:06:22 2013//
+/template.m/1.3/Wed Apr  3 15:56:52 2013//
+/xydata_avgfile.m/1.1/Wed Apr  3 16:04:52 2013//
+/xydata_merge.m/1.1/Wed Sep 19 05:45:38 2007//
+/xydata_sub.m/1.1/Wed Apr  3 16:04:53 2013//
+D/mathstrop////
+D/strucellop////
+D/biophysics////
+/specdata_plot.m/1.1/Sun Aug 18 04:10:25 2013//
+/xydata_div.m/1.1/Sun Aug 18 04:08:07 2013//
+/xypro_savesetup.m/1.1/Thu Aug 22 15:29:07 2013//
+/xypro_readsetup.m/1.2/Fri Aug 23 18:52:47 2013//
+/xypro_readsetup2.m/1.1/Fri Aug 23 19:16:11 2013//
+/parse_varargin.m/1.6/Sun Aug 25 16:17:10 2013//
+/specdata_readfile.m/1.3/Sat Sep 21 03:32:46 2013//
+/specdata_savefile.m/1.6/Wed Mar 19 05:07:04 2014//
+D/qixia////
+D/specreader////
+/xypro_fitfunc.m/1.4/Mon Feb 23 03:31:20 2015//
+/xypro_gui.m/1.27/Wed Jan  7 21:54:46 2015//
+/xypro_init.m/1.15/Wed Jan  7 20:57:21 2015//
+/xypro_dataprep.m/1.5/Tue Jan 26 00:24:27 2016//
+/xypro_plot.m/1.9/Tue Jan 26 00:24:27 2016//
+/startup.m/1.30/Wed Oct 26 15:21:56 2016//

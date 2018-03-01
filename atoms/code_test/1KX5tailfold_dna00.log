@@ -1,0 +1,56 @@
+  C R Y S O L    Version 2.8.2  -- 14/09/12
+ 
+ 
+ -- Program  started  at   17-Feb-2013   17:28:51--
+ 
+ --------  Real space resolution and grid  -------- 
+ 
+  Maximum order of harmonics ............................ : 50
+  Order of Fibonacci grid ............................... : 18
+  Total number of directions ............................ : 4182
+ 
+ ------------  Reciprocal space grid  -------------
+ 
+   in s = 4*pi*sin(theta)/lambda [1/angstrom] 
+  Maximum scattering angle .............................. : 0.5000
+  Number of angular points .............................. : 251
+ 
+ --- Structural parameters (sizes in angstroms) --- 
+ 
+ PDB file name .......................................... : 1KX5tailfold_dna.pdb
+  Number of atoms read .................................. : 6021
+ Geometric Center:   46.060   89.136    6.561
+  Number of carbons read ................................ : 2880
+  Number of nitrogens read .............................. : 1089
+  Number of oxigens read ................................ : 1760
+  Number of phospor atoms read .......................... : 292
+ For 2280  zero directions radius    4.47 assumed
+ Center of the excess electron density: -0.003 -0.039  0.005
+ Electron   Rg   :  44.66       Envelope   Rg      :  38.62    
+ Shape      Rg   :  44.62       Envelope  volume   : 0.2160E+06
+ Shell    volume : 0.4290E+05   Envelope  surface  : 0.1335E+05
+ Shell      Rg   :  50.34       Envelope  radius   :  64.51    
+ Shell    width  :  3.000       Envelope  diameter :  118.7    
+ Molecular Weight: 0.8862E+05   Dry volume         : 0.1074E+06
+ Displaced volume: 0.7588E+05   Average atomic rad.:  1.444    
+ 
+ -- No data fitting, parameters entered manually --
+ 
+ Solvent density ........................................ : 0.3340
+ Contrast of the solvation shell ........................ : 0.0
+ Average atomic radius .................................. : 1.444
+ Excluded Volume ........................................ : 7.588e+4
+ Average atomic volume .................................. : 12.60
+ Radius of gyration from atomic structure
+ Rg ( Atoms - Excluded volume + Shell ) ................. : 44.70
+ Rg from the slope of net intensity ..................... : 44.88
+ Average electron density ............................... : 0.5920
+  
+ ----------------  Output files  ------------------
+  
+ Coefficients   saved to file 1KX5tailfold_dna00.flm
+ CRYSOL data    saved to file 1KX5tailfold_dna00.sav
+ Intensities    saved to file 1KX5tailfold_dna00.int
+ Net amplitudes saved to file 1KX5tailfold_dna00.alm
+ 
+  C R Y S O L    Version 2.8.2  -- 14/09/12 ----  terminated at   17-Feb-2013   17:30:20--

@@ -1,0 +1,5 @@
+This directory is intended for improved versions of the supplied
+MATLAB functions.  Files in this directory override MATLAB functions, 
+therefore it should come first in the matlabpath variable.
+
+Think twice before adding any more files.

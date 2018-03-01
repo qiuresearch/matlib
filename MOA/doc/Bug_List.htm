@@ -1,0 +1,88 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Known Problems in Code</TITLE>
+</HEAD>
+<BODY>
+
+<U><FONT SIZE=5><P ALIGN="CENTER">Known Problems in Code</P>
+</U></FONT><FONT SIZE=4><P>&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;July 14, 2000. </P>
+
+<P>General problems with package.</P>
+
+<P>&#9;&#9;1.  Error Handling is not designed.</P>
+<P>&#9;&#9;2.  No classes for the different categories of data.</P>
+<P>&#9;&#9;3.  No handling of textual information included with classes.</P>
+<P>&#9;&#9;4.  No sophisticated way of saving and inter-relating images, plots and so on.</P>
+<P>&#9;&#9;5.  Limited to only one form of data analysis.</P>
+<P>&#9;&#9;6.  Not readily comparable to other programs on the market.</P>
+<P>&#9;&#9;7.  Lack of documentation as to how SAX data is gathered in group.</P>
+<P>&#9;&#9;8.  Lack of design plan or clear goals and objectives for software.</P>
+<P>&#9;&#9;9.  General lack of documentation of software, review of software, polling of user community of software and so on.</P>
+<P>&#9;&#9;10.  Doesn’t currently generate image distortion data.</P>
+
+<P>&nbsp;</P>
+<P>Functions at c-level - Dezinger is slow</P>
+<P>&#9;&#9;&#9;Dezinger will not work for large image sets due to model estimate algorithm in principle</P>
+<P>&#9;&#9;&#9;Dezinger only has no error status report.</P>
+<P>&#9;&#9;&#9;Dezinger only has one mode.  Should support median mode, fourier mode, etc.</P>
+
+<P>&#9;&#9;&#9;Image distortion correction sets boundaries of image to zero rather that NaN</P>
+<P>&#9;&#9;&#9;Image distortion is much slower than it needs to be.</P>
+<P>&#9;&#9;&#9;Image distortion is lossy.</P>
+<P>&#9;&#9;&#9;Image distortion has no shortcut for integration routines.</P>
+<P>&#9;&#9;&#9;Image distortion files do not have a reader in matlab.</P>
+<P>&#9;&#9;&#9;Intensity correction is not into units of X-rays per pixel.</P>
+
+<P>&#9;&#9;&#9;Integration routine does not support NaN.</P>
+<P>&#9;&#9;&#9;Integration routine does not support errors.</P>
+<P>&#9;&#9;&#9;Integration routine does not support negative radii.</P>
+<P>&#9;&#9;&#9;Integration routine should have 2 modes and return bins.</P>
+<P>&#9;&#9;&#9;Integration routine does not support dot product mode.</P>
+<P>&#9;&#9;&#9;Integration routine only supports one mode of smoothing.</P>
+<P>&#9;&#9;&#9;</P>
+<P>&#9;&#9;&#9;Tiff reading is not platform independent.</P>
+<P>&#9;&#9;&#9;Tiff reading does not support full TV6 tag set.</P>
+
+<P>&#9;&#9;&#9;No universal make or testing functions.</P>
+<P>&#9;&#9;&#9;Documentation not complete.</P>
+<P>&#9;&#9;&#9;</P>
+<P>At Matlab Level -  </P>
+<P>&#9;&#9;&#9;average_tag.m assumes image intensity monitor is in element 5 of the ATOD nonstandard tags as written by TV6.   </P>
+<P>&#9;&#9;&#9;average_tag.m does not read dates and times</P>
+<P>&#9;&#9;&#9;</P>
+<P>&#9;&#9;&#9;caycegrate.m takes a very long time to decide on bowtie direction.</P>
+<P>&#9;&#9;&#9;caycegrate.m doesn’t handle points on the +- boundary well.</P>
+<P>&#9;&#9;&#9;circle.m is non-intuitive.  Also, it only works for a 3 button mouse.</P>
+<P>&#9;&#9;&#9;correct.m -  relies on global variables.</P>
+<P>&#9;&#9;&#9;dezing.m – only takes input as a 3D array.  Should support file loading and other operations.</P>
+<P>&#9;&#9;&#9;get_tag -  only returns ATOD tag and doesn’t give any description of it.</P>
+<P>&#9;&#9;&#9;guinier – no capacity for linear fit.</P>
+<P>&#9;&#9;&#9;integrater.m -  relies on global variables.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  doesn’t do negative radii.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  no adjustment on bin size and range.</P>
+<P>&#9;&#9;&#9;mask.m &#9;-&#9;very unintuitive interface.</P>
+<P>&#9;&#9;&#9;&#9;&#9;- &#9;doesn’t support editting of older masks.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  doesn’t show the final result.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  doesn’t permit zooming.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  doesn’t permit changing of display during masking.</P>
+<P>&#9;&#9;&#9;new_calibration.m -  Should check with user before deleting old calibration, and query for new parameters.</P>
+<P>&#9;&#9;&#9;pixel_to_q.m &#9;-  Doesn’t fix intensity to be right.</P>
+<P>&#9;&#9;&#9;plotter.m &#9;-  No decent help file.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  Should be subsumed into show</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  doesn’t give hold, or handle access.</P>
+<P>&#9;&#9;&#9;roi.m &#9;&#9;-  A little non-intuitive.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  Doesn’t mark roi as it integrates.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  Doesn’t give median, number of pixels, mean location or so on.</P>
+<P>&#9;&#9;&#9;slurp.m&#9;-  Too monolithic.  </P>
+<P>&#9;&#9;&#9;&#9;&#9;-  Doesn’t check to see if tags exist.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  Doesn’t correct to X-ray’s per pixel.</P>
+<P>&#9;&#9;&#9;startup.m &#9;- not documented well enough.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  global variables.</P>
+<P>&#9;&#9;&#9;show.m &#9;-  not interactive once called up.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  doesn’t have log option built in.</P>
+<P>&#9;&#9;&#9;&#9;&#9;-  doesn’t support default range or image.</P>
+<P>&#9;&#9;&#9;spec_to_phos.m  - very hacky way of calibrating.</P>
+<P>&#9;&#9;&#9;&#9;&#9;       &#9;&#9;</P></FONT></BODY>
+</HTML>

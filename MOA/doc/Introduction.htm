@@ -1,0 +1,309 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Illustrative Introduction to Package</TITLE>
+</HEAD>
+<BODY>
+
+<U><FONT SIZE=6><P ALIGN="CENTER"></P>
+<P ALIGN="CENTER">Illustrative Introduction to Package</P>
+</U></FONT><FONT SIZE=4>
+<P>To use this package, you need to know a little about Matlab, and also understand the basic processes involved in X-ray image analysis.  This article hopes to walk you through the main features of the package.  If you find it unclear you may find someone showing you it will make it much clearer.  If you don’t like all the waffle there is a quick reference section.</P>
+
+<P>In essence, X-ray analysis requires at least the following proceedures.  </P>
+<P>&#9;</P>
+<P>&#9;Calibration and Initialization </P>
+<P>&#9;&#9;&#9;-  This is discussed in Sections One and Section Four and a Half and introduces the commands, <U>startup</U>, <U>circle</U> and <U>spec_to_phos</U>.</P>
+
+<P>&#9;Loading images into Matlab</P>
+<P>&#9;&#9;&#9;-  This is discussed in Section Two with the command, <U>slurp</U>.</P>
+<P>&#9;</P>
+<P>&#9;Displaying, examining and Masking images</P>
+<P>&#9;&#9;&#9;-  This is discussed in Section Three, Section Four and uses the commands <U>show</U>, <U>mask</U> and <U>roi</U>.</P>
+
+<P>&#9;Integrating, Plotting Integrals and derived quantities</P>
+<P>&#9;&#9;&#9;-  This is done in Section Five and Five and a Half and uses the commands, <U>integrater</U>, <U>guinier</U>, <U>kratky</U>, <U>caycegrate</U>.</P>
+
+<P>Hopefully an interactive Matlab walkthough will be done for the real image analysis package, but this is a start.</P>
+
+<P ALIGN="CENTER">&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step One</B> -  <B>Starting</P>
+</B></FONT><FONT SIZE=4>
+<P>Having fired up Matlab, use ‘cd’ and ‘ls’ to move into the directory with this file.  The routines in this package need to know certain information.  They want to know what image intensity and distortion correction files to use, what masks to use when displaying images and integrating images, the beam position, the X-ray wavelength, the distance from detector to sample and sundry information.  These facts are stored in global variables. <B> You do not want to use the same variable names as these or the routines will get confused.  </P>
+</B>
+<P>They are,</P>
+
+<P>&#9;Intensity_Correct, X_Distortion_Map, Y_Distortion_Map – Arrays of singles used by correct.m</P>
+<P>&#9;X_cen, Y_cen – Location of beam. (vertical)</P>
+<P>&#9;Spec_to_Phos  - Distance from specimen to phosphor in pixels.</P>
+<P>&#9;X_Lambda – Wavelength of X-rays in Angstrom.</P>
+<P>&#9;MaskD, MaskI – Default masks used for display and integrating.</P>
+
+<P>You can check on them at any time with the MATLAB command whos.</P>
+<P>&#9;</P>
+<P>They are initialized by the function <U>startup</U>.  If you’ve never used these routines before, go in Matlab to the directory containing this Readme document.  If you just type </P>
+
+<P>&#9;&gt;&gt; startup;</P>
+
+<P>Matlab will execute this script, globalize all the above variables and initialize some of them.  You are free to change the values of any of them at any time.  For example, if startup.m does not set X_cen or Y_cen, the beam centre and you know it is 300,105.3 you can type,</P>
+
+<P>&#9;&gt;&gt; X_cen = 300;</P>
+<P>&#9;&gt;&gt; Y_cen = 105.3;</P>
+<P> </P>
+<P>and that is set.  However, you probably want to edit startup to initialize at least some of them, if not all of them.</P>
+
+<P>Here is what they mean.</P>
+
+<P>&#9;Intensity_Correct, X_Distortion_Map, Y_Distortion_Map are image files the same size as your images used to correct for CCD distortions.  These variables are specific to a particular detector.  For example, the command </P>
+
+<P>&#9;&gt;&gt;  load Correction_1KBin2.mat</P>
+<P>will initialize them for the 1K detector using Bin2 whereas,</P>
+<P>&#9;&gt;&gt; load Correction_PM.mat</P>
+<P>will initialize them for the PM detector.</P>
+
+<P>MaskD and MaskI are variables the same dimension as the correction file.  To initialize them you can just put in <U>startup</U>,</P>
+
+<P>&#9;&gt;&gt; MaskD=mask; MaskI=mask;</P>
+
+<P>which sets them to one.</P>
+
+<P>If you know X_Lambda, Spec_to_Phos, X_cen or Y_cen you should enter them, but everything will work even if you don’t.</P>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step Two</B> -   <B>Loading images</P>
+</B></FONT><FONT SIZE=4>
+<P>We want to <U>slurp</U> images off disk.  Assuming you are in the right directory and your images were made using TV6’s ima command they should be saved in sequence.  Let’s suppose images ernie0.tif and ernie1.tif are backgrounds, and ernie2.tif, ernie4.tif and ernie5.tif are images of the same object.  A 1 joule photon hit the detector during ernie3.tif so there is no useful information in it.  Normal usage of <U>slurp</U> would be,</P>
+
+<P>&#9;x=slurp(‘ernie’,[2,4:5],[0:1]);</P>
+
+<P>x would then be a background, CCD and flux corrected average of ernie2, ernie4 and ernie5.  We’ll explain the nature of each of those corrections in a second.  First up, let’s use <U>slurp</U> piecemeal to illustrate the steps.</P>
+
+<P>&#9;a=slurp(‘ernie’,2);</P>
+
+<P>would do the following things.  First, it loads ernie2.tif.  Next, it corrects for the CCD intensity and distortion.  Finally, it places the result in a.  This is the simplest possible use of <U>slurp</U>.  In essence, a is the average of ernie2.tif.</P>
+
+<P>The command,</P>
+
+<P>&#9;b=slurp(‘ernie’,[2,4,5]);</P>
+<P>is a little more complicated.  <U>Slurp</U> loads images 2,4 and 5.  It does take the average, but rejects pixels from each image which have been zingered.  You can do this by hand using the function <U>dezing</U>.  Taking this average, it does the same CCD intensity and distortion correction.  The result is returned in b.</P>
+
+<P>You could do the same thing to the backgrounds with,</P>
+<P>&#9;c=slurp(‘ernie’,[0,1]);</P>
+
+<P>Then, if you did the operation,</P>
+<P>&#9;d=b-c;</P>
+<P>you’d have the signal of ernie2.tif, ernie4.tif and ernie5.tif minus the background.  </P>
+
+<P>However, there is one more thing to correct for.  The flux of X-rays that made up images 2,4 and 5 may be different from other images on disk.  If you used TV6 1K, the flux of X-rays is recorded in the tif tags.  You can get the average flux for a set of images using <U>average_tag</U>.m.  For example, average_tag(‘ernie’,[4,5]) will give you the average flux of X-rays in ernie4.tif and ernie5.tif.  You could normalize the flux of d through the command,</P>
+
+<P>&#9;e = d / (average_tag(‘ernie’,[2,4:5]) – average_tag(‘ernie’,[1,0]));</P>
+
+<P>This is identical to the command,</P>
+
+<P>&#9;e = slurp(‘ernie’,[5,2,4],[1,0]);</P>
+
+<P>That’s the basics of getting images dezingered, CCD corrected, averaged, background subtracted and flux normalized.</P>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step Three – Image Display</P>
+</B></FONT><FONT SIZE=4>
+<P>The command, <U>show.m</U> does this easily.  Typing,</P>
+
+<P>&#9;show(e)</P>
+<P>  </P>
+<P>will display e in a new figure.  A number of features are important.  First, the least colour in the image will be the minimum value of e and the brightest colour in the image will be the maximum value of e.  Next, <U>show</U>(e) returns those two values.  Finally, only those pixels in e for which the global variable, MaskD, is one, will be displayed.  We’ll talk about masking in the next step but if you are curious you can look at the mask using,</P>
+
+<P>&#9;show(MaskD,[0,1]) </P>
+
+<P>which will display the MaskD.  If MaskD is not all on, parts of the image will not be displaed.  You can quickly reset it with,</P>
+
+<P>&#9;MaskD = mask;</P>
+
+<P>but we’ll come back to that in the next section.</P>
+
+<P>You can set the colour range of <U>show</U> with,</P>
+
+<P>&#9;show(e,[ 0.01, 0.06]);</P>
+
+<P>This will set the lower range of the image at pixels of brightness 0.01 and the upper range at 0.06.  This is a handy feature for showing up subtle changes in intensity.</P>
+
+<P>&nbsp;</P>
+<P>Next, you may want to examine various regions of the image to measure the mean, maximum and minimum values within them.  The function, </P>
+<U><P>roi.m</U> lets you do this and uses a very similar format to <U>show</U>.  This lets you pick out polygons on an image and get the mean, maximum and minimum within that region.  Eg,</P>
+
+<P>&#9;roi(e);</P>
+
+<P>displays e, and then for each polygon picked out the mean, maximum and minimum value are returned.  You can use it a bit more trickily,</P>
+
+<P>&#9;roi(e, [-0.1, 3.2]); </P>
+
+<P>sets the range for the display just as for <U>show</U>.  While,</P>
+
+<P>&#9;[mean, maximum,minimum]=roi(e);</P>
+
+<P>works the same, but at the end you have the values of mean, maximum and minimum saved in the vectors mean, maximum and minimum.  While <U>roi.m</U> does tell you how to escape, it doesn’t advertise that particularly well.  Just do a right mouse click without picking a polygon and you are home free.</P>
+
+<P>Just a final quick trick.  Suppose you want to see a log plot.  A quick, ugly way to do this is,</P>
+
+<P>&#9;f=log(e);&#9;show(f);</P>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step Four – Masking</P>
+</B></FONT><FONT SIZE=4>
+<P>  Often you want to pick, view, integrate or do something to only a fraction of the picture.  A fraction of the picture can be selected with a mask.  The basic command is <U>mask</U>.  The standard syntax is,</P>
+
+<P>&#9;mymask = mask(e);</P>
+
+<U><P>Mask</U> is an interactive function.  At the beginning, mymask includes the whole image.  <U>Mymask</U> displays the image and asks you to pick out a polygonal region using the left mouse button. Each point you click on becomes a vertex and after two vertices are fixed the polygon is closed.  When you’ve marked all the vertices you want, just right-click the mouse.  Only points where you have clicked the left mouse button become vertices.  <U>Mask</U> does not mind if you pick points off screen, or if you have intersections within the polygon. </P>
+
+<P>Once the polygon is picked, <U>mask</U> will ask you what you want to do with the polygon.  The options are,</P>
+
+<P>&#9;&#9;Include data (i)</P>
+<P>&#9;&#9;Exclude data (e)</P>
+<P>&#9;&#9;Reject Polygon (r)</P>
+<P>&#9;&#9;Negate Mask (n)</P>
+<P>&#9;&#9;Quit (q)</P>
+
+<P>If you pick (i), <U>mask</U> will remove all points within the polygon you selected along with all the other points that have been removed to date by previous efforts.  If you pick (e), <U>mask</U> will include all the points within the polygon you selected, even if they were removed on a previous attempt.  If you reject the polygon, <U>mask</U> will just give you a fresh chance to pick out one you do want.  If you negate the <U>mask</U>, all the points that were included will be excluded, and vice versa.  Finally, if you quit, <U>mask</U> will return the current image mask to mymask.  It’s a little counter-intuitive, but it works.</P>
+
+<P>So, the basic process is to pick out polygons, and then either include or exclude the data in them.  At the end, mymask will be an array of 0s and 1s.  The 0s are excluded pixels and the 1s are included pixels.</P>
+
+<P>A couple of points to note.  Firstly, the negate function is very handy.  Suppose you want to mark out a thin slice for an integral.  Then, you first (n)  to exclude everything.  Then, mark out your thin slice and (i) it.  Voila!</P>
+
+<P>Secondly, <U>mask</U> can be used to return a fully inclusive mask (ie. all 1s) without pressing a button.  Just type,</P>
+
+<P>&#9;mymask = mask;</P>
+
+<P>Finally, you can set the range on <U>mask</U>’s display, just like you did on show.  The call then becomes,</P>
+
+<P>&#9;mymask = mask(e,[0.03,0.2]);</P>
+
+<P>Once you’ve got your mask, you will want to do different things with it.  You may well want to save your mask.  This is easily done with,</P>
+
+<P>&#9;save First_Mask.mat mymask</P>
+
+<P>This saves the image, mymask in the file ‘First_Mask.mat’.  You get it back with the load command.</P>
+
+<P>Next, you may want to use your mask when using <U>show</U>.  <U>Show</U>’s mask is called <U>MaskD</U> and can be set to the value in a mask, mymask, say, with,</P>
+
+<P>&#9;MaskD=mymask;</P>
+
+<P>Or, you may want to use it to integrate.  We haven’t got that far yet, but the integrate command uses MaskI as it’s mask.  You just set it with,</P>
+
+<P>&#9;MaskI = mymask;</P>
+
+<P>Anyway, that’s far too much on masks.</P>
+
+<P>&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step Four and a Half – Calibration</P>
+</FONT><FONT SIZE=4>
+</B><P>There isn’t a pretty calibration method in MATLAB yet, but this one works for laminar calibrants.</P>
+
+<P>First, you need the image centre.  This is where the <U>circle</U> command comes in.  Show the calibration image with the command,</P>
+
+<P>&#9;show( calibration);</P>
+
+<U><P>Circle.m</U> will plot circles on the screen to let you estimate by eye where the image centre is.  You place the centre of the circle using the left mouse button.  You put a point on the perimeter using the middle mouse button.  You quit by pressing the right mouse button.  Each time you update the circle centre, circle.m prints out the circle centre.  On leaving, it gives you all the values you tried in a single vector of the form, x,y.    If your beam centre is off screen, that is no problem.  Just expand the figure so there is lot’s of grey space off screen.  By clicking outside the image, you can make either x or y negative.   So, to do this all you need is,</P>
+
+<P>&#9;v= circle;</P>
+
+<P>and v will come back with a column of x values and a column of y values.</P>
+
+<P>This should give you the centre of the beam, X_cen and Y_cen.  Now you need to set them.  You do this with, </P>
+
+<P>&#9;X_cen = 314; Y_cen = 102;</P>
+
+<P>if the beam were centred on 314, 102 say.  </P>
+
+<P>Next, you need to eliminate the old calibration with the command,</P>
+<P>&#9;</P>
+<P>&#9;new_calibration;</P>
+
+<P>Indeed, it’s worth noting that if at any time you want to go back to uncalibrated integrations, you just execute new_calibration.  Next, you want to integrate the image (see section five for details).  This will give you a scattering curve from which you can pick of the diffraction ring maxima.  For a laminar calibrant (like silver stearate) with d-spacing, d (in Angstroms), where the m-th diffraction ring has a radii of, r_m, in pixels, Spec_to_Phos would be given by,</P>
+
+<P>&#9;Spec_to_Phos = r_m / tan( 2 arcsin( m * X_Lambda/ (2d) ) )</P>
+
+<P>This is given in the function, <U>spec_to_phos.m</U>.  You call it with,</P>
+
+<P>&#9;spec_to_phos([1,3],[ 50,148],48.85, 1.54)</P>
+
+<P>where 1.54 is the x-ray wavelenth in Angstroms, 48.85 is the d-spacing of silver stearate in Angstroms and 50 and 148 are the radii in pixels of rings 1 and 3 of the scattering pattern.  For help, just type help spec_to_phos.</P>
+
+<P>After that, you can decide on X_Lambda, Spec_to_Phos, X_cen and Y_cen somehow and set them before you go off integrating willy nilly.</P>
+
+<P>&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step Five – Integrating</P>
+</B></FONT><FONT SIZE=4>
+<P>Integration is the trickiest thing we’ve done so far and it has a lot of global variables – X_cen, Y_cen, Spec_to_Phos, X_Lambda and MaskI.  <U>Integrater.m</U> wants to integrate your image using X_cen, Y_cen as the centre of the integral, only include points for which MaskI is one and finally convert distances on the screen into reciprocal Angstrom using Spec_to_Phos and X_Lambda.  What happens if these aren’t set.</P>
+
+<P>If you don’t set X_cen and Y_cen, <U>integrater</U> will give you a warning and assume the beam is in the middle of the screen.  If you don’t set <U>Spec_to_Phos</U> and <U>X_Lambda</U>, integrater again warns you and returns scattering angles in pixels, rather than in reciprocal Angstroms.  If MaskI is not as you’d like it, the wrong bits of the image will go in and out.  </P>
+
+<P>MaskI is the only variable you should be playing with after you’ve calibrated the image.  If you want to include the whole image in your integral, the command,</P>
+
+<P>&#9;MaskI = mask;</P>
+
+<P>will suffice.  If you want to make up a mask, you can do it using the standard masking proceedure in Step Four.  If you’ve been using a mask and forgotten what it looks like, something along the lines of,</P>
+
+<P>&#9;temp=MaskD;</P>
+<P>&#9;MaskD=MaskI; % Now the display mask is the same as the integate</P>
+<P>&#9;show(imag);</P>
+<P>&#9;maskD=temp; % Restore the original display mask.</P>
+
+<P>will show you what your mask looks like on image, imag.</P>
+
+<P>Let’s say you’ve picked the points you want to have in and out by setting MaskI.  What you want to do is integrate.  This is easy.  Just type,</P>
+
+<P>&#9;Ival=integrater(imag);</P>
+
+<P>and a radial, per pixel normalized integral centred on X_cen, Y_cen including all the pixels in MaskI will be placed in Ival.  Ival(:,1) are the q-values and Ival(:,2) are the intensities.  <U>Plotter</U>(Ival,’m’) will do the trick if you want to look at it in magenta, say.</P>
+
+<P>You can turn per pixel normalization off with,</P>
+
+<P>&#9;Ival = integrater(imag,’radial’);</P>
+
+<P>That’s it.  Nothing more to it.  You move the centre around with X_cen and Y_cen.  You can cut parts of the image in or out of the integral with MaskI.  As for Spec_to_Phos and X_Lambda, they should be constant for a given beam configuration.</P>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step Five and a Third – Guinier and Kratky Plots</P>
+</FONT><FONT SIZE=4>
+<P>&nbsp;</P>
+</B><P>There is nothing a small angle scatterer likes better than to plot Guinier and Kratky plots.  Two quick and dirty routines exist to help with this.  The first is <U>guinier.m</U>. </P>
+
+<P>Let’s assume you just used <U>integrate.m </U>to make q and Ival hold your integral.  Then,</P>
+
+<P>&#9;G = guinier(Ival);</P>
+
+<P>will put the log of Ival(:,2) into G(:,2) and q squared into G(:,1).  You can then plot this with,</P>
+
+<P>&#9;plotter(G);</P>
+
+<P>Similarly, you might want to use <U>kratky.m</U> to make Kratky plots.  This is done with,</P>
+
+<P>&#9;K = kratky(Ival); plotter(K)</P>
+
+<P>is all you need.</P>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</FONT><B><FONT SIZE=5><P ALIGN="CENTER">Step Five and Two Thirds – Caycegrate.m</B></FONT><FONT SIZE=4> </P>
+
+<P>Historically, TV6 has defined an integral using a bowtie shaped integration region.  Out of convenience, one side of the bowtie was assigned positive radii while the other was given negative radii.   caycegrate.m works a lot like integrate.m but supports negative radii.  You just go,</P>
+
+<P>&#9;Ival = caycegrate(imag);</P>
+<P>or &#9;Ival = caycegrate(imag,’radial’);</P>
+
+<P>First, it needs to figure out the angle along which the bowtie points.  If each point in the bowtie (x_i, y_i) is summed up, then theta, the angle of the bowtie is given by,</P>
+
+<P>&#9;theta = 0.5 * atan2 ( 2.0*sum(x_i * y_i) , sum(x_i*x_i – y_i*y_i));</P>
+
+<P>Next, it breaks the mask into two separate pieces.  The positive radii piece and the negative radii piece.  Finally, it integrates each piece and puts the answers back together.  You would only use this function if you think for some reason the left and right hand side of your bowtie might give different answers.</P>
+<P ALIGN="JUSTIFY"></P></FONT></BODY>
+</HTML>

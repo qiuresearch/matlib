@@ -1,0 +1,68 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Default">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (Win95; I) [Netscape]">
+   <title>Adding_Functions</title>
+</head>
+<body>
+
+<center><b><font size=+3>Adding New Functions</font></b><font size=+1></font></center>
+<font size=+1></font>
+<p><font size=+1>The whole purpose of this toolkit is to allow code development.
+So, ideally people would be adding c, mex and m-files all the time. The
+beauty is that the functions will be independent of MOA and so can be used
+anywhere, including the new TV6. Any new function should be developed in
+the /testing directory before being allowed into the main code area. The
+source goes in MOA/src/.&nbsp; The documentation in MOA/doc.&nbsp; The
+executable goes into MOA/bin.&nbsp; Any data needed for your function goes
+into MOA/data.&nbsp; Finally, update the file listings!&nbsp; Let’s look
+at the format of each.</font>
+<p><font size=+1>C-functions - C functions live in the /src directory.
+If the c-function performs a similar function to an existing one, it should
+go into that c-file. So, if someone wrote an integral function that performed
+an integral in dot product mode, it should go into Integrate.c. Otherwise,
+a new c-file is called for. The format for an example c-function is shown
+below</font>
+<p><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int radial_integral(
+double * image, uint8 * mask,</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int width, int height,</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+double xcen, double ycen,</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+double * q, double * Intensity,</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+double r_min, double r_max,</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int Num_Bins, int mode);</font>
+<p><font size=+1>The function return value is it’s execution status (0
+successful, -1 a failure) with all other values returned through pointers.
+Memory integrity is crucial, and avoiding pointer assignments (or the possibility
+of unallocated pointers) is very important. Images are passed as arrays.
+Except for the need for extensive testing, not much more should be said.
+There is no need for extensive input precondition testing as this should
+be done at the Mex level. Don’t forget to document extensively how your
+algorithm works in an algorithmic .tex or .html file in MOA/.</font>
+<p><font size=+1>Mex Wrappers - The API guide in Matlab gives good instructions
+on making Mex wrappers. The most important point is again memory allocation.
+If this is done incorrectly, bugs are sure to result. Secondly, it is crucial
+to parse the input from the Matlab command line in a meticulous fashion
+to ensure it conforms to the preconditions of the C-function. Finally,
+an accompanying .m file should always be written given help. You can compile
+a mex function in Windows matlab with the command,</font>
+<p><font size=+1>(eg.) >> </font>mex correct_distortion.mex.c -output correct_distortion
+<p><font size=+1>at the Matlab command line.</font>
+<p><font size=+1>M files - Again, the Matlab Programming guide gives a
+good general introduction. Don’t forget to put in a help comment at the
+top. Don’t be lazy on parsing and always keep calculation and calling as
+separate as possible. M-files are a good way to quickly write code that
+will ultimately have to be in C, but where you can get away with the speed
+differential.</font>
+<p><font size=+1>Thats about it. If you look at the format of the present
+functions, you can only do better.</font>
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>

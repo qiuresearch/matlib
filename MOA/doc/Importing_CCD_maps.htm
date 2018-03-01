@@ -1,0 +1,33 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Importing  CCD maps to Matlab</TITLE>
+</HEAD>
+<BODY>
+
+<B><FONT SIZE=5><P ALIGN="CENTER">Importing  CCD maps to Matlab</P>
+</B></FONT>
+<P>The CCD intensity and distortion maps are stored by TV6 as floating point TIFF images.  Matlab does not support the floating point tiff, and we haven’t currently got a floating tiff reader running for Matlab.  An ugly but effective method for transporting the maps is as follows.</P>
+
+<P>Step One -  Find all three maps.  Create a test image and using TV6 do independent distortion and intensity corrections on it.  Save all three images along with the three maps.</P>
+
+<P>Step Two - Using the programs tiff_to_ascii.c and load_float_tiff.c on Linux, convert all three CCD maps into text arrays.</P>
+
+<P>Step Three - Load the arrays into Matlab using the &quot;load&quot; command, and convert them to the single() data type.</P>
+
+<P>Step Four -  Matlab and TV6’s tiff-readers exchange rows for columns between each other.  To correct for this you must do the following steps carefully.  First, transpose the intensity map.  Then, let,</P>
+
+<P>&#9;&#9;temp = y_map;</P>
+<P>&#9;&#9;y_map = x_map’;</P>
+<P>&#9;&#9;x_map = temp’;</P>
+
+<P>Step Five -  Using correct_distortion() and correct_intensity(), try out the maps.  Compare it to the job TV6 did.  If they are not identical to within rounding error then you’ve done something wrong.  It is critical to get it right as this file will be used over, and over and over again.</P>
+
+<P>Step Six - Save the intensity and distortion maps in a .mat file as Intensity_Map, X_Distortion_Map and Y_Distortion_Map.</P>
+
+<P>Step Seven -  Go away vowing to improve on this method.</P>
+<FONT SIZE=4>
+<P>&nbsp;</P>
+<P>&nbsp;</P></FONT></BODY>
+</HTML>

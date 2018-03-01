@@ -1,0 +1,74 @@
+#! /bin/zsh
+
+MATSERV=${MATSERV-${HOME}/matserv}
+IN=$MATSERV/matserv.in
+OUT=$MATSERV/matserv.out
+LOG=$MATSERV/matserv.log
+DONE=$MATSERV/matserv.done
+
+if [[ $1 == (h|-h|--help) ]]; then cat <<- END
+	usage: $0:t [qQ] [{c|r} cmd ] [-h(elp)]
+	  send command[s] cmd and also standard input
+	  to the MATLAB server
+	options:
+	    c,r following arguments are commands
+	    q   brief output
+	    Q   suppress all output
+END
+    exit
+fi
+
+IF=; CMD=;
+OF=( sed -e "'"'/\(%matserv\)\|\(^>>\)/d'"'" )
+
+while [[ $# -gt 0 && -z "$CMD" ]]; do
+    case $1 in 
+    *[^crqQ-]*)	echo "unknown switch $1" 1>&2;
+		exit 3
+	;;
+    *)
+	[[ $1 == *q* ]] &&
+	    OF=( $OF "|" sed -e "'"'/\(^[[:space:]]*$\)\|\( =$\)/d'"'" )
+	[[ $1 == *Q* ]] &&
+	    OF=( ":" )
+	[[ $1 == *[cr]* ]] &&
+	    CMD="${argv[2,-1]} "
+	;;
+    esac
+    shift
+done
+    
+CMD=${CMD% ##}
+if [[ -z "$CMD" || $( tty ) == "not a tty" ]]; then
+    IF="cat"
+fi
+if [ ! -p $IN ]; then
+    echo matserv is not running, start it first 1>&2
+    exit 2
+fi
+
+trap "rm -f ${IN}; exit 2" 1 2 3 13 15
+rm -f $OUT
+{ 
+    echo "diary $OUT; cd $PWD; %matserv"
+    echo -E $CMD
+    $IF
+    echo "diary off; fclose(fopen('$DONE','w')); %matserv"
+} > $IN
+
+# wait for done dummy file
+while [[ ! -f $DONE ]]; do
+    usleep 500;
+done
+setopt noglob
+# debug:
+# echo ${(F)OF}; exit
+if [ -n $LOG ]; then
+    cat $OUT | tee -a $LOG | eval $OF
+else
+    cat $OUT | eval $OF
+fi
+rm $DONE &&
+if grep -q '^.\???? ' $OUT; then
+    exit 1
+fi

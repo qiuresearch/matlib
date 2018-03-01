@@ -1,0 +1,2 @@
+#! /bin/sh
+/usr/local/bin/matlab -r "run('/usr/local/grasp_m/grasp_startup');grasp"

@@ -1,0 +1,56 @@
+  C R Y S O L    Version 2.8.2  -- 14/09/12
+ 
+ 
+ -- Program  started  at   17-Feb-2013   20:50:08--
+ 
+ --------  Real space resolution and grid  -------- 
+ 
+  Maximum order of harmonics ............................ : 50
+  Order of Fibonacci grid ............................... : 18
+  Total number of directions ............................ : 4182
+ 
+ ------------  Reciprocal space grid  -------------
+ 
+   in s = 4*pi*sin(theta)/lambda [1/angstrom] 
+  Maximum scattering angle .............................. : 0.5000
+  Number of angular points .............................. : 251
+ 
+ --- Structural parameters (sizes in angstroms) --- 
+ 
+ PDB file name .......................................... : dsDNA25mer.pdb
+  Number of atoms read .................................. : 1019
+ Geometric Center:   -1.614   -0.848   40.080
+  Number of carbons read ................................ : 486
+  Number of nitrogens read .............................. : 189
+  Number of oxigens read ................................ : 296
+  Number of phospor atoms read .......................... : 48
+ Center of the excess electron density: -0.018 -0.030  0.048
+ Electron   Rg   :  24.93       Envelope   Rg      :  25.29    
+ Shape      Rg   :  24.89       Envelope  volume   : 0.2241E+05
+ Shell    volume :  9562.       Envelope  surface  :  2698.    
+ Shell      Rg   :  28.16       Envelope  radius   :  43.87    
+ Shell    width  :  3.000       Envelope  diameter :  86.67    
+ Molecular Weight: 0.1520E+05   Dry volume         : 0.1842E+05
+ Displaced volume: 0.1399E+05   Average atomic rad.:  1.485    
+ Number of bases :     50
+ 
+ -- No data fitting, parameters entered manually --
+ 
+ Solvent density ........................................ : 0.3340
+ Contrast of the solvation shell ........................ : 0.0
+ Average atomic radius .................................. : 1.485
+ Excluded Volume ........................................ : 1.399e+4
+ Average atomic volume .................................. : 13.73
+ Radius of gyration from atomic structure
+ Rg ( Atoms - Excluded volume + Shell ) ................. : 24.99
+ Rg from the slope of net intensity ..................... : 24.98
+ Average electron density ............................... : 0.5587
+  
+ ----------------  Output files  ------------------
+  
+ Coefficients   saved to file dsDNA25mer00.flm
+ CRYSOL data    saved to file dsDNA25mer00.sav
+ Intensities    saved to file dsDNA25mer00.int
+ Net amplitudes saved to file dsDNA25mer00.alm
+ 
+  C R Y S O L    Version 2.8.2  -- 14/09/12 ----  terminated at   17-Feb-2013   20:50:43--

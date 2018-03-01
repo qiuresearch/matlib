@@ -1,0 +1,50 @@
+*********************************************************************************************
+** File Name: SolXAtoms.txt
+**
+** Format: ATOM   ATOM_TPYE   ELEMENT_NAME ELECTRON_NUMBER   VOLUME	END_SIGN(i.e., ATM)
+**
+**	ATOM:  Indicator for Program molX. Every row marked ATOM will be read in by molX. Column Position: 1-4. 
+**	ATOME_TYPE: Up to four letter atom types. Column Position: 7-10.
+**	ELEMENT_NAME: Up to three letters. Column Position: 13-15.
+**	ELECTRON_NUMBER: Total electrons in an atom or atomic group, in electrons.  Column Position: 18-22.
+**	VOLUME: Volume of an atom or atomic group, in A^3. Column Position: 25-30.
+**	ATM: Indication of end of the line. Column Position: 33-35.
+*********************************************************************************************
+
+**ATOM   ATOM_TPYE   ELEMENT_NAME ELECTRON_NUMBER   VOLUME	ATM*
+
+ATOM  H       H    1.0    5.15  ATM
+ATOM  C       C    6.0   16.44  ATM
+ATOM  CH      C    7.0   21.59  ATM  
+ATOM  CH2     C    8.0   26.74  ATM  
+ATOM  CH3     C    9.0   31.89  ATM 
+ATOM  N       N    7.0   15.00  ATM
+ATOM  NH      N    8.0   22.00  ATM  
+ATOM  NH2     N    9.0   27.00  ATM  
+ATOM  NH3     N   10.0   32.00  ATM  
+ATOM  O       O    8.0    9.13  ATM  
+ATOM  OH      O    9.0   14.28  ATM  
+ATOM  P       P   15.0    5.73  ATM
+ATOM  S       S   16.0   19.86  ATM
+ATOM  SH      S   17.0   25.10  ATM
+ATOM  Mg2     Mg  10.0   17.16  ATM
+ATOM  Ca2     Ca  18.0   31.89  ATM
+
+ATOM  Cl      Cl  17.0   22.45  ATM
+ATOM  Fe2     Fe  24.0    8.30  ATM
+ATOM  O1      O    9.0   24.00  ATM
+ATOM  H2O     O   10.0   28.00  ATM
+ATOM  Re      Re  75.0   28.70  ATM
+ATOM  Sn      Sn  50.0   22.00  ATM
+ATOM  Zn2     Zn  28.0   11.49  ATM
+ATOM  Zn      Zn  30.0   11.49  ATM 
+ATOM  Mn      Mn  25.0   11.00  ATM
+ATOM  Ti      Ti  22.0   11.00  ATM // guess
+ATOM  CX      CX   6.0    9.00  ATM // C 
+ATOM  CY      CY   7.0   22.00  ATM // CH 
+ATOM  Si      Si  14.0    5.60  ATM
+ATOM  Rh3     Rh  42.0   10.30  ATM
+ATOM  Rh      Rh  45.0   10.30  ATM
+ATOM  I       I   53.0   32.50  ATM
+ATOM  Au      Au  79.0   12.50  ATM
+ATOM  F       F    9.0   10.30  ATM // Estimate from vdW radius 1.35A

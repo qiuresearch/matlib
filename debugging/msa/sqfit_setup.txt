@@ -1,0 +1,20 @@
+# MSA modeling parameters  written @ 18-Oct-2005 14:14:28
+# By program xsqfit
+# note: the line may be too long, but do NOT cut it!
+smooth_width=0
+smooth_degree=1
+q_min=0.0200
+q_max=0.3678
+hqratio=0.4000
+hqmethod=1
+ff_use=4
+ff_sol=
+ff_vac=
+ff_exp=
+ff_inp=hp_ff.iq
+radius_cyl=10.0000
+height_cyl=54.4000
+msamethod=1.0000
+#S 0 SQFIT setup parameters
+#L x filename  z_m diameter concen. scale_msa temperature  I  epsilon q_min q_max auto_rescale ff_use  hqratio hqmethod offset_iq scale_iq  radius_cyl height_cyl diameter_equiv use_diameter_equiv z_m2 I2 msa-method fname_ff_inp
+   1 hpfig1_solid.iq  20  50  7.61  1  300  14.8  78.3  0.02  0.368  0  4 0.4  1  -0 1 10 54.4 45 1 10 1e+03 1 hp_ff.iq

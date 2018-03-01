@@ -1,0 +1,114 @@
+Last editted 15 July, 2000 by Gil Toombes
+
+(nb.  These are c programs, not c++)
+
+Summary :  An attempt to steal the important parts of TV6's TIFF reader so other programs can read 
+	  TV6's non-standard TIFFs.  We've okay on this front.  There are three useful functions in 
+	
+	 tiff_reading.c
+
+		-> read_image_header()
+			takes a file pointer and returns the image header (TIFF Tags) in a structure
+		 called image_info.
+
+		-> read_image_data()
+			takes a file pointer and an array pointer and returns the TIFF data in the array.
+		-> print_image_header()
+			writes out the structure image_info.
+
+	I attempted to build a mex wrapper for read_image_header but ran into problems with bigbro's mex 
+compiler.  The wrapper looks okay but needs a bit of work on the mex side.
+
+	There may be a few problems with memory leaks but they are pretty small.  Someone should come back and iron this out at some stage.
+
+	There are two quick test routines.  read_image_header_test.c and read_image_data_test.c.
+
+
+
+Goal :  Import all tiffs written by TV6 into C, MATLAB or anywhere else for 
+that matter by hijacking the TV6 TIFF reading code.  Previous work used tiff.h
+which is no longer supported and doesn't seem to like windows much.  Tiff reading seems mostly a matter of getting the right format so we don't want to do any more coding than strictly necessary.
+
+
+
+Log :   1.  Imported the following TV6 files from TV6_APS directory.
+		
+	TIFF_OUT.C - TV6 tiff writer.
+	TIFF2.H -  Tiff constant file.
+	TIFF_IN.H - TV6 tiff reader.
+	tv6sys.pro -  Contains the prototypes for all functions in tv6.
+	lzw3.c -  TV6 file supporting LZW tiff compression.
+	object.h -  Contains TV6 data structures.
+
+	2.  Imported the following test images.
+
+	Float.tif - a TV6 floating point tiff.
+	PM_BACK.tif - a background taken on PM
+	1K_EXP.tif - an image taken on the 1K with the ATOD board in place.	
+
+	3.  Pinched the tiff data types from tiff.h (Sam Leffler).
+	This allows us to support uint8, uint16, int16, int32 and so on.
+
+	4.  Created tiff_reading.c to hold our basic tiff reading routines.
+
+	5.  Started tinkering with includes of TIFF_IN.C after copying it to tiff_in.c
+	
+ 		First switched unistd.h for io.h
+		Added lzw3.c as seems not to be included elsewhere.
+		Made file tiffsys.pro a hacked down version of TV6SYS.pro with only tiff
+	  prototypes included.
+		Cleaned up the Z^s from file end of lzw3.c, tiff2.c, object.h, tiff_in.c
+	
+	6.  Added functions min and max to tiff_in.c as they are implicitly assumed and not 
+           present in linux.  This made tiff_in.c somewhat happier.
+
+	7.  Disabled assignments to DefaultWide, DefaultHigh and DefaultBpp.
+	  These seem to be global variables in TV6 so I don't think we'll miss them.
+
+	8.  Ran into trouble with the _msize function which is WATCOM specific.
+	   It seems to be used to see if there is enough space left in the buffer and reallocate if need be
+	   Since the reallocation proceedure should be okay, I just eliminated the "enough space left" option.
+	   I can't see this causing a problem that doesn't already exist in memory allocation but you never 
+	  know
+
+	9.  read_tiff_header seems to be happy.  
+	    making read_tiff_header.mex.c to interface it with matlab.
+	    Doesn't work.  Not quite sure why.
+	    Looks a lot like our old mex problems with linux again.
+
+	10.  making a hacky c-file tester instead.
+	    read_tiff_header_test.c
+		Two problems have emerged.  
+		Firstly, the tiff header reader has some kind of memory allocation problem.
+		Depending on what you do before you use it, it works or crashes.  Nothing before or after it
+		dynamically allocates memory.
+		Secondly, the image_info structure does not have the image dimensions or type.
+		These can be easily fixed.
+		Adding image_width, image_height and DataType to image_info struct.
+		Modifying get_im_head to assign them values.
+		Okay, that's all working so the important point is.
+
+	TIFF routine, get_im_head seems to have a memory problem.
+
+	11.  moving onto read_tiff_data
+	     Found one source of the memory problems.  I wasn't initializing all the pointers in the 
+	     Object_Descriptor structure prior to the call to get_im_data.  get_im_data wasn't sure whether to
+	     allocate them or not and was crashing.  I've also deallocated them at the end.  This seems to have 
+	     fixed the problem.
+	
+	     Now successfully loading tiffs.
+
+	12.  There are still potential memory problems.  Firstly, I didn't search through any of the 
+	TV6 routines.  Secondly, as I close out the ObjPtr class, I set all its pointer to NULL but I haven't chased down it's children.  This will spawn memory leaks in the long run.  Someone else can worry about that.
+
+		
+		
+
+
+
+
+
+
+
+
+

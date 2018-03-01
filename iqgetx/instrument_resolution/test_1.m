@@ -1,0 +1,78 @@
+function s = test_1( Q)
+% --- Usage:
+%        s = test_1(Q)
+%
+% --- Purpose:
+%        Calculate the standard variance of the Instrument Resolution
+%        Function
+%
+% --- Return(s): 
+%        The initial condition and the standard deviation of the Resolution
+%        Function
+%
+% --- Parameter(s):
+%        The wave vector Q and the Scatering  
+%
+% --- Example(s):
+%
+% $Id: test_1.m 07/30/2012 by Dehua Guo Exp $
+%
+
+verbose = 1;
+if nargin < 1
+   funcname = mfilename; % or use dbstack to get its caller if needed
+   eval(['help ' funcname]);
+   return
+end
+
+% The formula is based on "Analytical Treatment of the Resolution
+% Function for small-Angle Scattering" by JAN SKOV PEDERSEN
+
+% length is in mm; R1 and R2 are radius; pixelsize is the diameter
+s = struct('lambda', 1.5417, 'd_lambda', 0.001, 'l', 1500, 'r1', ...
+               1, 'L', 220, 'r2', 0.5, 'pixelsize', 0.150);
+
+% values used by the book on page 158
+%sconfig = struct('lambda', 6, 'd_lambda', 6*0.13, 'L1', 16140, 'R1', ...
+%               7.15, 'L2', 13190, 'R2', 6.35, 'pixelsize', 5);
+
+theta = asin(s.lambda*Q/(4*pi));
+if theta >=pi/4
+    error('the value of Q is too large, please input a small value of Q')
+end
+
+s.sigma_w = Q*s.d_lambda/(s.lambda*2*(2*log(2))^(0.5));
+% sigma_w is the variance caused by the source
+
+a1 = s.r1/(s.l/(cos(2*theta))^2+s.L);
+a2 = s.r2*cos(2*theta)^2/s.l;
+if a1 >= a2;
+    beta_1 = 2*s.r1/s.L - 0.5*s.r2^2/s.r1*(cos(2*theta))^4 ...
+        /(s.l^2*s.L)*(s.L+s.l/(cos(2*theta))^2)^2;
+else beta_1 = 2*s.r2(1/s.L + (cos(theta))^2/l) - 0.5*s.r1^2/s.r2*s.l/s.L...
+        /((cos(2*theta))^2*(s.L+s.l/(cos(2*theta))^2));
+end
+
+b1 = s.r1/(s.L+s.l/cos(2*theta));
+b2 = s.r2*cos(2*theta)/s.l;
+if b1 >= b2;
+    beta_2 = 2*s.r1/s.L - 0.5*s.r2^2/s.r1*(cos(2*theta)^2)...
+       /(s.l^2*s.L)*(s.L+s.l/cos(2*theta))^2;
+else beta_2 = 2*s.r2(1/s.L + cos(2*theta)/s.l)-0.5*s.r1^2/s.r2*s.l/s.L...
+         /(cos(2*theta)*(s.L+s.l/cos(2*theta)));
+end
+    
+s.sigma_c1 = 2*pi/s.lambda*cos(theta)*beta_1/(2*(2*log(2))^0.5);
+s.sigma_c2 = 2*pi/s.lambda*beta_2/(2*(2*log(2))^0.5);
+%s.sigma_c1 is the standard variance caused by sample's size in the direction which
+%is perpendicular to the <q>.
+%s.sigma_c2 is the standard variance caused by sample's size in the direction which
+%is parallel to the <q>.
+
+s.sigma_d1 = 2*pi/s.lambda*cos(theta)*s.pixelsize/(s.l*(2*log(2))^0.5);
+s.sigma_d2 = 2*pi/s.lambda*cos(theta)*cos(2*theta)^2*s.pixelsize/(s.l*(2*log(2))^0.5);
+%s.sigma_d is the standard variance caused by the finited small size of the detetor.
+
+s.sigma_1 =  sqrt(s.sigma_w^2+s.sigma_c1^2+s.sigma_d1^2);
+s.sigma_2 =  sqrt(s.sigma_c2^2+s.sigma_d2^2);
+% sigma is the total standard variance of the Resolution Function

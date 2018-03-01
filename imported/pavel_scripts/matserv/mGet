@@ -1,0 +1,33 @@
+#!/bin/sh
+
+OFMT="%.6g"
+OFS='\t'
+if [ $# -eq 0 ]; then
+    echo "usage: mGet var"
+    exit
+fi
+a="XM_mGet$$"
+mat q << END
+$a = $*;
+if ~isstr($a) & ~iscellstr($a) & ~isnumeric($a)
+    whos $a
+    error('cannot save this datatype')
+end
+
+if isstr($a)
+    fprintf('%s', $a);
+elseif iscellstr($a)
+    for i=1:length($a)
+	fprintf('%s\n', $a{i});
+    end
+elseif isnumeric($a)
+    c=size($a,2);
+    fmt='';
+    for i=1:c-1
+	fmt=[fmt '${OFMT}${OFS}'];
+    end
+    fmt=[fmt '${OFMT}\n'];
+    fprintf(fmt, double(real($a')));
+end
+clear $a
+END
