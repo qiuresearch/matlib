@@ -20,10 +20,17 @@ addpath(fullfile(matlib_dir, 'strucellop'))
 addpath(fullfile(matlib_dir, 'howell'))
 addpath(fullfile(matlib_dir, 'imported'));
 addpath(fullfile(matlib_dir, 'imported', 'MinMaxSelection'));
-addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17'))
-addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17', 'layout'));
-addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17', 'Patch'));
-addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17', 'layoutHelp'));
+if verLessThan('matlab', '8.4') % matlab2014b
+    addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17'))
+    addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17', 'layout'));
+    addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17', 'Patch'));
+    addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v1p17', 'layoutHelp'));
+else
+    addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v2p31'))
+    addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v2p31', 'layout'));
+    addpath(fullfile(matlib_dir, 'imported', 'GUILayout-v2p31', 'layoutdoc'));
+end
+
 addpath(fullfile(matlib_dir, 'MOA', 'bin'))
 
 %% Plot default color and line orders
