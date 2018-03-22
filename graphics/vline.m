@@ -12,9 +12,12 @@ if nargin < 1
    return
 end
 
-linestyle = ':';
+linestyle = '-';
 color = [.2 .2 .2];
 parse_varargin(varargin);
+xlimit = get(gca, 'xlim');
 
-vl = graph2d.constantline(xdata, 'color', color, 'linestyle', linestyle);
-changedependvar(vl,'x');
+vl=plot([xdata, xdata], xlimit, 'color', color, 'linestyle', linestyle);
+
+%vl = graph2d.constantline(xdata, 'color', color, 'linestyle', linestyle);
+%changedependvar(vl,'x');

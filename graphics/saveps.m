@@ -46,6 +46,7 @@ end
 % set all axes tickmode to "manual"
 haxes = get(hf, 'Children');
 for i=1:length(haxes)
+    if ~strcmpi(get(haxes(i), 'type'), 'axes'); continue; end
     haxes_xtickmode{i} = get(haxes(i), 'XTickMode');
     haxes_ytickmode{i} = get(haxes(i), 'YTickMode');
     set(haxes(i), 'XTickMode', 'Manual', 'YTickMode', 'Manual');
@@ -55,8 +56,9 @@ end
 print(hf, '-depsc2', '-noui', psfile);
 disp(sprintf('Saving figure into EPS file: %s', psfile))
 
-% change back ytickmode
+% change back tickmode
 for i=1:length(haxes)
+    if ~strcmpi(get(haxes(i), 'type'), 'axes'); continue; end
     set(haxes(i), 'XTickMode', haxes_xtickmode{i}, 'YTickMode', haxes_ytickmode{i});
 end
 

@@ -7,8 +7,8 @@ function [fullfilename, filename, filebase] = gwxray_getfilebynum(scannums, vara
    
    parse_varargin(varargin);
 
-   if ~strcmp(datadir(end), FILESEP)
-      datadir = [datadir FILESEP];
+   if ~strcmp(datadir(end), filesep())
+      datadir = [datadir filesep()];
    end
       
    if (numel(scannums) == 1)

@@ -311,8 +311,8 @@ function varargout = sasimg_gui(im, varargin)
       
       %      hpanel = uiextras.Panel('Parent', parent, 'Title','Image', 'Padding', 25);
       %      hplotact.imaxesbox = uiextras.HBox('Parent', hpanel);
-      hvbox = uiextras.VBox('Parent', himpanel, 'Spacing', 23);
-      hplotact.imaxes = axes('Parent', hvbox); %imagesc(0);
+      hvbox = uiextras.VBox('Parent', himpanel, 'Spacing', 1);
+      hplotact.imaxes = axes('Parent', hvbox);  %imagesc(0);
       % mouse mode
       %hpanel = uiextras.Panel('Parent', parent, 'Title', 'Mouse');
       hbox = uiextras.HBox('Parent', hvbox);
@@ -333,7 +333,7 @@ function varargout = sasimg_gui(im, varargin)
       set(hvbox, 'Sizes', [-1,25]);
       %      hplotact.colorbaraxes = colorbar('Parent', hplotact.imaxesbox, ...
       %                                       'EastOutside');
-      hvbox = uiextras.VBox('Parent', hiqpanel, 'Spacing', 23);
+      hvbox = uiextras.VBox('Parent', hiqpanel, 'Spacing', 1);
       hplotact.iqaxes = axes('Parent', hvbox); %imagesc(0);
       hbox = uiextras.HBox('Parent', hvbox);
       hplotact.iq_logx = uicontrol('Parent', hbox, 'Style', 'CheckBox', ...

@@ -143,6 +143,6 @@ if (plotopt.iq == 1) && ~isempty(sas(1).iq)
       end
    end
    xlim(xlimit); ylim(ylimit);
-   legend({sas(:).title}, 'Interpreter', 'None');
+   legend({sas(:).title}, 'Interpreter', 'None', 'Location', 'NorthEast');
    legend boxoff
 end
