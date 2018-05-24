@@ -16,5 +16,8 @@ linestyle = ':';
 color = [.2 .2 .2];
 parse_varargin(varargin)
 
-hl = graph2d.constantline(ydata, 'color', color, 'linestyle', linestyle);
-changedependvar(hl,'y');
+for i=1:length(ydata)
+    plot(xlim, [ydata(i),ydata(i)], varargin{:});
+end
+% hl = graph2d.constantline(ydata, 'color', color, 'linestyle', linestyle);
+% changedependvar(hl,'y');
