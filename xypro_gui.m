@@ -539,15 +539,16 @@ function varargout = xypro_gui(xydata, varargin)
       
       % 1) visualization axis
       hpanel = uiextras.Panel('Parent', parent, 'Title','PLOT', 'Padding',0);
-      hbox = uiextras.Grid('Parent', hpanel, 'Spacing', 40, 'Padding', 4);
-      hplotrun.autoylim = uicontrol('Parent', hbox, 'String', ...
-                                      'Y', gui_settings{:});
+      hbox = uiextras.Grid('Parent', hpanel, 'Spacing', 4, 'Padding', 4);
       hplotrun.autoxylim = uicontrol('Parent', hbox, 'String', ...
                                       'XY', gui_settings{:});
-      hplotrun.axes = axes('Parent', hbox); % xlabel('x'); ylabel('y');
+      hplotrun.autoylim = uicontrol('Parent', hbox, 'String', ...
+                                      'Y', gui_settings{:});
       hplotrun.autoxlim = uicontrol('Parent', hbox, 'String', ...
                                       'X', gui_settings{:});
-      set(hbox, 'ColumnSizes', [20,-1], 'RowSizes', [-1,20]);
+      hplotrun.axes = axes('Parent', uicontainer('Parent', hbox));
+
+      set(hbox, 'ColumnSizes', [20,-1], 'RowSizes', [20,-1]);
       
       % 2) plot options box
       hpanel = uiextras.Panel('Parent', parent, 'Title', ['Options']);
@@ -678,7 +679,7 @@ function varargout = xypro_gui(xydata, varargin)
             for i=1:length(optnames)
                plotopt.(optnames{i})=get(hplotrun.plotopt.(optnames{i}), 'Value');
             end
-            axes(hplotrun.axes); cla;
+            axes(hplotrun.axes); cla; hold all;
             xypro_plot(xc.xydata(iselect), 'dataselect', dataselect, ...
                        'plotopt', plotopt);
          case hplotrun.save

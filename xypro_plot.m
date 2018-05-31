@@ -88,7 +88,7 @@ if (plotopt.line == 0); style_setting = {style_setting{:}, 'LineStyle', ...
 markerorder = {'s', 'o', '^', 'd', 'x', 'V', 'p', '<', '*', 'h', '+'};
 markerorder = repmat(markerorder, 1, ceil(length(plotdata)/ ...
     length(markerorder)));
-if strfind(pwd,'schowell')               
+if 0              
     colororder = [ ...
         0.21960784,  0.38039216,  0.54117647; ...  % blue
         0.85098039,  0.23921569,  0.24313725; ...  % red
@@ -113,8 +113,9 @@ else
         0.250    0       0.250; ...
         1.0       1.0     0.; ...
         ];
-    colororder = repmat(colororder, ceil(length(plotdata)/length(colororder(:,1))),1);
 end
+colororder = repmat(colororder, ceil(length(plotdata)/length(colororder(:,1))),1);
+
 for i=1:length(plotdata)
    
    if (plotopt.marker == 1)
@@ -141,7 +142,7 @@ else
 end
 if  ~isempty(plotlege)
    if (plotopt.legend == 1)
-      legend(strrep(plotlege, '_', '\_'), 'FontSize', plotopt.legendfontsize);
+      legend(strrep(plotlege, '_', '\_'), 'FontSize', plotopt.legendfontsize, 'Location', 'NorthEast');
       legend boxoff
    else
       legend off
