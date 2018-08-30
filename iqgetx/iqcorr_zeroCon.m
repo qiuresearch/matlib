@@ -254,6 +254,7 @@ plotopt = plotopt_default;
 plotopt.legend = 0;
 xypro_plot([xydata, ffdata], 'plotopt', plotopt);
 xylabel('iq');
+title(savename);
 h = get(gca, 'xlabel');
 set(h, 'Units', 'Normalized');
 pos = get(h, 'position') + [0 0.03 0];

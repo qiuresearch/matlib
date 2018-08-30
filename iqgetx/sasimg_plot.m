@@ -55,7 +55,7 @@ if ~isempty(strmatch('im', dataselect, 'exact')) || (plotopt.im == 1)
 
    % only the last image is shown as of now!
    im = sas(end).im;
-   title(sas(end).title);
+   title(sas(end).title, 'Interpreter', 'None');
    if (plotopt.MaskI == 1);
       im = im .* double(sas(1).MaskI);
    end

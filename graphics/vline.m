@@ -17,7 +17,9 @@ color = [.2 .2 .2];
 parse_varargin(varargin);
 xlimit = get(gca, 'xlim');
 
-vl=plot([xdata, xdata], xlimit, 'color', color, 'linestyle', linestyle);
+for i=1:length(xdata)
+    vl=plot([xdata(i), xdata(i)], xlimit, 'color', color, 'linestyle', linestyle);
+end
 
 %vl = graph2d.constantline(xdata, 'color', color, 'linestyle', linestyle);
 %changedependvar(vl,'x');

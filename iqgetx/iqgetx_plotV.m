@@ -61,7 +61,7 @@ for i=1:num_data
       set(hf, varargin_figure{:});
    end
    figure_size(hf, 'king');
-   
+
    haxes = axes_create(2,3,'qeensize', 1, 'xmargin', 0.07, 'ymargin', 0.0);
    % 1) raw sample - raw buffer
    axes(haxes(1)); set(haxes(1), 'xaxis', 'top'); hold all
