@@ -70,7 +70,7 @@ if ~exist('initpar', 'var') || isempty(initpar)
    % fitting options
    xydata.ifunc = 1;
    xydata.funclist = {'linear', 'gauss', 'lorentz', 'sine', 'guinierRg', ...
-                      'osmodata', 'osmodata2', 'dnapeak'};
+                      'osmodata', 'osmodata2', 'dnapeak', 'double_gauss'};
    xydata.algorithmlist = {'trust-region-reflective', 'levenberg-marquardt'};
    xydata.fitpar = [];
    xydata = xypro_fitfunc(xydata, 'init_fitpar', 1:length(xydata.funclist));

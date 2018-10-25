@@ -797,7 +797,7 @@ function varargout = xypro_gui(xydata, varargin)
                                     'Tag', 'xmax_up', 'UserData', 1);
       set(hbox, 'Sizes', [-1,-1,-2,-1]);
       
-      fitpar_names = num2lege(1:7, 'par');
+      fitpar_names = num2lege(1:9, 'par');
       for i=1:length(fitpar_names)
          hfitpar.panel(i) = uiextras.Panel('Parent', parent, 'Title', ...
                                            fitpar_names{i}, 'Padding', 6);

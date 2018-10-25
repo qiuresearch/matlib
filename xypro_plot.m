@@ -123,7 +123,7 @@ for i=1:length(plotdata)
                     'Marker', markerorder{i}, 'MarkerSize', ...
                     plotopt.markersize}; 
    else
-      this_style = {style_setting{:}, 'Color', colororder(i,:)}; 
+      this_style = {style_setting{:}, 'Color', colororder(i,:), 'LineStyle', '-'}; 
    end
    
    plotdata{i} = plotdata{i}(1:plotopt.istep:end,:);

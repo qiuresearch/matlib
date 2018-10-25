@@ -86,8 +86,8 @@ for i = 1:num_sets
     ifixed = find(fitpar.fit == 0);
     if ~isempty(ifixed)
         fitpar.limit(ifixed) = 1;
-        fitpar.upper(ifixed) = fitpar.value(ifixed)+1e-6;
-        fitpar.lower(ifixed) = fitpar.value(ifixed)-1e-6;
+        fitpar.upper(ifixed) = fitpar.value(ifixed)+1e-3;
+        fitpar.lower(ifixed) = fitpar.value(ifixed)-1e-3;
     end
     fitpar.Algorithm = fitpar.algorithmlist{fitpar.ialgorithm};
     if strcmpi(fitpar.Algorithm, 'levenberg-marquardt')
