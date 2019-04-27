@@ -19,6 +19,8 @@ for i = 1:length(samnames)
    % 1) read the spectrum
    specdata =uvspec_readspectrum([FilePrefix samnames{i} FileSuffix]);
    specdata.rawdata = specdata.data;
+   %   specdata.title = [specdata.title '-' samnames{i}];
+   specdata.title = num2str(xvalues(i));
    data = specdata.rawdata;
    
    % 2) background removal
@@ -68,7 +70,6 @@ for i = 1:length(samnames)
       Dilution_Factor = 1;
    end
    specdata.peakdata([2,4]) = specdata.peakdata([2,4])*Dilution_Factor;
-   specdata.title = [specdata.title '-' samnames{i}];
    
    % 5) pool data together
    uvspec(i) = specdata;
@@ -111,7 +112,11 @@ else
 end
 title([SaveFileName ' ' titlestr], 'Interpreter', 'None', 'FontSize', ...
       fontsize);
-axis tight; zoomout(0.07);
+  if exist('XMinPlot', 'var') && exist('XMaxPlot', 'var')
+      xlim([XMinPlot, XMaxPlot]);
+  else
+      axis tight; zoomout(0.07);
+  end
 
 % baseline corrected spectrum
 axes(hAxes(2)); hold all;
@@ -138,7 +143,11 @@ switch iBkgMethod
 end
 title([SaveFileName ', BkgMethod: ' bkgstr], 'Interpreter', 'None', ...
       'FontSize', fontsize);
-axis tight; zoomout(0.07);
+  if exist('XMinPlot', 'var') && exist('XMaxPlot', 'var')
+      xlim([XMinPlot, XMaxPlot]);
+  else
+      axis tight; zoomout(0.07);
+  end
 
 % Peak data
 axes(hAxes(3)); hold all

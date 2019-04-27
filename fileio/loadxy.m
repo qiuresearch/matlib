@@ -19,7 +19,7 @@ function data = loadxy(fname, varargin)
 if exist(fname,'file') == 0
     help loadxy
     disp('                    ');
-    disp('Specified file does not exist.');
+    disp(['Specified file: ', fname, ' does not exist!']);
     disp('Please review input.');
     disp('                    ');
     return

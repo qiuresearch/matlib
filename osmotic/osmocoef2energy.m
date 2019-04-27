@@ -7,7 +7,7 @@ function [energydata, pressuredata] = osmocoef2energy(osmocoef, ...
 %                                  distance, DNA_Equilibrium_Spacing)
 % --- Purpose:
 %        return the energy per A verus distance curve. The osmocoef is
-%        assumed to give the pressure/distance curve in (dyne/cm^2)
+%        assumed to give the pressure/distance curve in (pascal)
 %        verus Angstrom. Hexagonal packaing is used.
 %
 % --- Parameter(s):
@@ -51,7 +51,7 @@ A = sqrt(3); % dV = A*xdx (volume derivative per base pair)
 % convert into KT at T=25C
 temperature = 25;
 kT = (4.1164092e-21)/(273.15+25)*(temperature+273.15); % in Joule
-B = kT*1e31; % 31 from A^3 and 10 dyne = 1 Pascal
+B = kT*1e30; % 31 from A^3
 
 if (has_vdw == 1); len_par_vdw = 2; else len_par_vdw = 0; end
 

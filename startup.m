@@ -86,7 +86,7 @@ colororder = [ ...
 %         % 1.0    0.5    0; ...  % this color is looks too similar to 1 0 0
 %         ];
 
-symbolorder = {'s', 'o', '>', 'd', '^', 'p', '<', 'h', 'V', 'x', '*', '+'};
+symbolorder = {'s', 'o', '>', 'd', '^', '<', 'v', 'p', 'h', 'x', '*', '+'};
 %symbolorder = {'s', 'o', '^', 'd', 'x', 'V', 'p', '<', '*', 'h', '+'};
 
 lineorder= {'-', '--', '-.', ':'};

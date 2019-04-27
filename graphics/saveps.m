@@ -55,6 +55,9 @@ end
 % print (note, sometimes, "ps2epsi" is needed for MS powerpoint)
 print(hf, '-depsc2', '-noui', psfile);
 disp(sprintf('Saving figure into EPS file: %s', psfile))
+%if unix(['convert -density 230x230 ' psfile ' ' psfile '.png'])
+%    disp(sprintf('Converted EPS to PNG: %s', [psfile '.png']))
+%end
 
 % change back tickmode
 for i=1:length(haxes)

@@ -13,7 +13,9 @@ y_label = 'Inter-axial Distance (A)';
 
 clear peakpar hpeakplot;
 hpeakplot = [];
-suffix = '.iq';
+if ~exist('suffix', 'var');
+   suffix = '.iq';
+end
 
 % check whether samnames is a numeric array or cellstr
 if isnumeric(samnames);
@@ -164,7 +166,7 @@ if exist('flag_osmotic', 'var') && (flag_osmotic == 1)
    end
 end
 
-eval([peakname '=samdata;']);
+eval([str2varname(peakname) '=samdata;']);
 
 % 3) visualization
 

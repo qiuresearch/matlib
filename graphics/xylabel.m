@@ -81,13 +81,13 @@ switch upper(selection)
    
    %% Omostic stressmethod
    case upper('osmoforce_dyne')
-      xlabel('inter-axial distance (\AA)', 'Interpreter', 'LaTex');
+      xlabel('inter-axial spacing (\AA)', 'Interpreter', 'LaTex');
       ylabel('log10(\Pi) (erg/cm^3)');%, 'Interpreter', 'LaTex');
    case {upper('osmoforce'), upper('osmoforce_pascal')}
-      xlabel('inter-axial distance (\AA)', 'Interpreter', 'LaTex');
+      xlabel('inter-axial spacing (\AA)', 'Interpreter', 'LaTex');
       ylabel('log10(\Pi) (Pa)');
    case {upper('osmoenergy')}
-      xlabel('inter-axial distance (\AA)', 'Interpreter', 'LaTex');
+      xlabel('inter-axial spacing (\AA)', 'Interpreter', 'LaTex');
       ylabel('energy (k$_B$T/\AA)', 'Interpreter', 'LaTex');
 
    %% Dynamic light scattering

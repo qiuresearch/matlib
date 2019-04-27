@@ -20,5 +20,5 @@ end
 axis tight
 legend(num2str(colororder))
 name = 'matlab_symbol_color';
-savepng(gcf, sprintf('/home/schowell/Dropbox/gw_phd/%s.png', name));
-saveps(gcf, sprintf('/home/schowell/Dropbox/gw_phd/%s.eps', name));
+savepng(gcf, sprintf('%s.png', name));
+saveps(gcf, sprintf('%s.eps', name));
