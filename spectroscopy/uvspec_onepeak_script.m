@@ -51,35 +51,45 @@ for i = 1:length(samnames)
    switch iPeakMethod
       case 1   % Method #1: peak search
          [ymax, iy] = max(data(imin:imax,2));
-         specdata.peakdata = [xvalues(i), ymax, data(imin+iy-1,1)];
+         specdata.peakdata = [xvalues(i), ymax, data(imin+iy-1,1), 0];
       case 2  % Method #2: peak fitting
          fitres = xyfit(data(imin:imax,:), 'lorentz', [(XMin+XMax)/2, ...
                              (XMax-XMin)/3, (XMax-XMin)*0.2]);
+         % estimate error bar
+         y_diff = fitres.y_fit - fitres.y_init;
+         dy0 = sqrt(total(y_diff.*y_diff)/length(y_diff));
+         % J is the Jacobian
+         [ymax, J] = feval(fitres.fitfunc, fitres.par_fit, fitres.par_fit(1));
+         %dymax = full(sqrt(total((J'.*fitres.par_error).^2)))*dy0;
+         dymax = dy0/length(y_diff);
          specdata.peakfit = [fitres.x0, fitres.y0_fit];
-         specdata.peakdata = [xvalues(i), max(fitres.y0_fit), fitres.par_fit(1)];
+         specdata.peakdata = [xvalues(i), max(fitres.y0_fit), ...
+                             fitres.par_fit(1), dymax];
    end
    
    % 4) Find baseline and correct the Dilutuion factor
    if (length(specdata.bkgdata) > 2)
-      specdata.peakdata(4) = specdata.bkgdata(locate(specdata.bkgdata(:,1), ...
+      specdata.peakdata(5) = specdata.bkgdata(locate(specdata.bkgdata(:,1), ...
                                                      specdata.peakdata(3)), 2);
    else
-      specdata.peakdata(4) = specdata.bkgdata(1);
+      specdata.peakdata(5) = specdata.bkgdata(1);
    end
    if ~exist('Dilution_Factor', 'var') || isempty(Dilution_Factor)
       Dilution_Factor = 1;
    end
-   specdata.peakdata([2,4]) = specdata.peakdata([2,4])*Dilution_Factor;
+   specdata.peakdata([2,4,5]) = specdata.peakdata([2,4,5])*Dilution_Factor;
+   
    
    % 5) pool data together
    uvspec(i) = specdata;
+   specdata.peakdata = full(specdata.peakdata);
    peakdata(i,:) = specdata.peakdata;
 end
    
 % 6) save data
 spec_stru.title = [SaveFileName ' Peak method: ' sPeakMethod{iPeakMethod}];
 spec_stru.columnnames = {strrep(xname, ' ', '-'), 'ODmax', 'Lambdamax', ...
-                    'Baseline'};
+                    'd_ODmax', 'Baseline'};
 if isfield(specdata, 'pathlength')
    spec_stru.pathlength = specdata.pathlength;
 end
@@ -165,7 +175,7 @@ legend boxoff;
 axes(hAxes(4));
 
 peakstr = num2str(peakdata, '%-06.3g');
-text(0.1, 0.98, [xname, ' | PeakOD', ' | \lambda', ' | baseline'], ...
+text(0.1, 0.98, [xname, ' | PeakOD', ' | \lambda', ' | d_PeakOD', ' | baseline'], ...
      'VerticalAlignment', 'Top');
 
 text(0.1,0.9, peakstr, 'VerticalAlignment', 'Top', 'FontName', 'fixedwidth');
