@@ -48,28 +48,45 @@ for iselect = 1:length(index)
    
    [pathstr, short_title, ext] = fileparts(xydata(i).title);
    
-   if ~isempty(strmatch('rawdata', dataselect, 'exact'))
-      iplot = iplot + 1;
-      plotdata{iplot} = xydata(i).rawdata(:,[xydata(i).xcol,xydata(i).ycol,xydata(i).ecol]);
-      plotlege{iplot} = ['rawdata - '  short_title];
+   if ~isempty(strmatch('rawdata', dataselect, 'exact')) 
+       if isempty(xydata(i).rawdata)
+           showinfo(['No rawdata available for: ' xydata(i).title]);       
+       else
+           iplot = iplot + 1;
+           plotdata{iplot} = xydata(i).rawdata(:,[xydata(i).xcol,xydata(i).ycol,xydata(i).ecol]);
+           plotlege{iplot} = ['rawdata - '  short_title];
+       end
    end
    
-   if ~isempty(strmatch('data', dataselect, 'exact'))
-      iplot = iplot + 1;
-      plotdata{iplot} = xydata(i).data(:,[1,2,4]);
-      plotlege{iplot} = ['data - '  short_title];
+   if ~isempty(strmatch('data', dataselect, 'exact')) 
+       if isempty(xydata(i).data)
+           showinfo(['No data available for: ' xydata(i).title]);
+       else
+           iplot = iplot + 1;
+           plotdata{iplot} = xydata(i).data(:,[1,2,4]);
+           plotlege{iplot} = ['data - '  short_title];
+       end
    end
    
    if ~isempty(strmatch('calcdata', dataselect, 'exact'))
-      iplot = iplot + 1;
-      plotdata{iplot} = xydata(i).calcdata;
-      plotlege{iplot} = ['calcdata - '  short_title];
+       if isempty(xydata(i).calcdata)
+           showinfo(['No calc data available for: ' xydata(i).title]);
+       else
+           iplot = iplot + 1;
+           plotdata{iplot} = xydata(i).calcdata;
+           plotlege{iplot} = ['calcdata - '  short_title];
+       end
    end
    
-   if ~isempty(strmatch('fitdata', dataselect, 'exact'))
-      iplot = iplot + 1;
-      plotdata{iplot} = xydata(i).fitdata;
-      plotlege{iplot} = ['fitdata - '  short_title];
+   if ~isempty(strmatch('fitdata', dataselect, 'exact')) 
+       if isempty(xydata(i).fitdata)
+           showinfo(['No fit data availalber for: ' xydata(i).title]);
+       else
+           
+           iplot = iplot + 1;
+           plotdata{iplot} = xydata(i).fitdata;
+           plotlege{iplot} = ['fitdata - '  short_title];
+       end
 %      iplot = iplot + 1;
 %      plotdata{2*iplot-1} = xydata(i).iq_dif(:,1);
 %      plotdata{2*iplot} = xydata(i).iq_dif(:,2);
