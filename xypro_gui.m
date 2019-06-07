@@ -338,12 +338,11 @@ function varargout = xypro_gui(xydata, varargin)
       xc = guidata(hObject);
       %set(xc.hfig, 'Pointer', 'Watch')
 
-      if isempty(xc.xydata)
-         disp('Please load data first...')
-         iselect=0;
+      if ~isempty(xc.xydata)
+          iselect = find([xc.xydata(:).select]);
+          if isempty(iselect); iselect=0; end
       else
-         iselect = find([xc.xydata(:).select]);
-         if isempty(iselect); iselect=0; end
+          iselect = 0;
       end
       hdatapro = xc.hdatapro;
       
@@ -355,8 +354,7 @@ function varargout = xypro_gui(xydata, varargin)
             else
                filenames = uigetfile();
             end
-            
-            if ~isempty(filenames)
+            if ~isempty(filenames) && ~isa(filenames, 'double')
                %dataformat_list = get(hdatapro.dataformat, 'String');
                %dataformat = dataformat_list{get(hdatapro.dataformat, 'Value')};
                dataformat = '';
@@ -378,9 +376,15 @@ function varargout = xypro_gui(xydata, varargin)
                xc.xydata = [xc.xydata, xypro_dataprep(xydata_new)];
                guidata(hObject, xc);
                gui_update(xc, 'update_all');
+            else
+                disp('No file selected!')
             end
-         case hdatapro.datalist
-            iselect_gui = get(hdatapro.datalist, 'Value');
+        case hdatapro.datalist
+           if isempty(xc.xydata)
+               disp('Please load data first...')
+               return
+           end
+           iselect_gui = get(hdatapro.datalist, 'Value');
             if (length(iselect_gui) == length(iselect)) && ...
                    (total(abs(iselect_gui-iselect)) == 0)
                disp('No changes in selection!')
@@ -443,7 +447,12 @@ function varargout = xypro_gui(xydata, varargin)
             else
                disp('No data is selected for removal!');
             end
-         case hdatapro.gui2selectdata
+        case hdatapro.gui2selectdata
+            if isempty(xc.xydata)
+                disp('Please load data first...')
+                return
+            end
+
             if (iselect(1) ~=0)
                gui_fields = intersect(fieldnames(hdatapro), ...
                                      fieldnames(xc.xydata(iselect(1))));
@@ -466,6 +475,11 @@ function varargout = xypro_gui(xydata, varargin)
                disp('No data is selected for GUI -> Selected data!');
             end
          case hdatapro.gui2alldata
+            if isempty(xc.xydata)
+                disp('Please load data first...')
+                return
+            end
+
             if (iselect(1) ~=0)
                gui_fields = intersect(fieldnames(hdatapro), ...
                                      fieldnames(xc.xydata(iselect(1))));
@@ -489,12 +503,21 @@ function varargout = xypro_gui(xydata, varargin)
                disp('Sorry! At least one data needs to be selected for GUI -> all data!');
             end
             
-         case hdatapro.guinier_check
+        case hdatapro.guinier_check
+          if isempty(xc.xydata)
+              disp('Please load data first...')
+              return
+          end
             if (iselect(1) ~= 0)
                rgfit_auto(xc.xydata(iselect(1)).data, 'qmin', ...
                           xc.xydata(iselect(1)).guinier_range(1));
             end
-         otherwise
+        otherwise
+           if isempty(xc.xydata)
+               disp('Please load data first...')
+               return
+           end
+           
             wtype = upper(get(hObject, 'Style'));
             tagname = get(hObject, 'Tag');
             switch wtype
