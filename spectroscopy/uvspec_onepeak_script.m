@@ -97,11 +97,11 @@ spec_stru.data = peakdata;
 specdata_savefile(spec_stru, [SaveFileName '.dat']);
  
 % 7) Plot
-if ~exist('hAxes', 'var') || isempty(hAxes) || isempty(axescheck(hAxes(1)))
-   set(gcf, 'OuterPosition', get(0, 'ScreenSize'), 'PaperPosition', ...
+%if ~exist('hAxes', 'var') || isempty(hAxes) || isempty(axescheck(hAxes(1)))
+   set(figure(), 'OuterPosition', get(0, 'ScreenSize'), 'PaperPosition', ...
             [0.25,1,8,9]);
    hAxes = axes_create(2,2, 'newfigure', 0);
-end
+   %end
 set(gcf, 'DefaultAxesFontSize', 10, 'DefaultTextFontSize', 10);
 fontsize = 10;
 
