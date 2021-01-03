@@ -713,7 +713,7 @@ function varargout = xypro_gui(xydata, varargin)
                        'plotopt', plotopt);
          case hplotrun.save
             saveprefix = get(hplotrun.saveprefix, 'String');
-            assignin('base', ['xypro_' saveprefix], xc.xydata);
+            assignin('base', ['xypro_' str2varname(saveprefix)], xc.xydata);
             showinfo(['save current data to workspace as: xypro_' saveprefix] );
             axes(hplotrun.axes); 
             xlabel(get(hplotrun.xlabel, 'String'));
